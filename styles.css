@@ -174,6 +174,10 @@ a:hover .ne { transform: translate(2px, -2px); }
 .cover { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
 .span-2 .cover { aspect-ratio: 16 / 8; }
 .cover-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.cover-dark { background: #0b0b0d; }
+.cover-dark img { object-position: center top; }
+.cover-light { background: #f1f2f4; display: grid; place-items: center; }
+.cover-light img { height: auto; object-fit: contain; padding: 6%; }
 .card:hover .cover-img img { transform: scale(1.025); }
 
 /* --- StayDirect cover (Noir Ember) --- */
@@ -433,6 +437,59 @@ a:hover .ne { transform: translate(2px, -2px); }
   .live-poster { display: block; position: static; }
   .live figcaption { display: none; }
   .meta { grid-template-columns: 1fr; }
+}
+
+
+/* --- case page parts used by product cases --- */
+.nda { display: flex; gap: 14px; align-items: flex-start; max-width: 760px; margin-top: 8px; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(var(--blue), .28); background: rgba(var(--blue), .06); }
+.nda p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+.nda-tag { flex: none; font: 500 11px/1 var(--mono); letter-spacing: .08em; padding: 6px 8px; border-radius: 6px; color: var(--fg); background: rgba(var(--blue), .2); }
+.cover-stage { border-radius: 22px; overflow: hidden; border: 1px solid var(--edge); box-shadow: 0 0 0 1px var(--edge), 0 40px 120px -40px rgba(var(--blue), .45); background: #0b0b0d; }
+.cover-stage img { width: 100%; height: auto; }
+.shot { border-radius: 14px; overflow: hidden; border: 1px solid var(--edge); background: #f1f2f4; box-shadow: 0 20px 50px -24px rgba(0,0,0,.6); }
+.shot img { width: 100%; height: auto; }
+.phones { margin: 0; display: grid; gap: 14px; align-items: start; }
+.phones-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.phones-3, .phones-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.phones .phone-shot { width: auto; border-radius: 18px; }
+.phones .phone-shot { aspect-ratio: 393 / 852; }
+.phones .phone-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.gallery .shot { aspect-ratio: 3 / 2; }
+.gallery .shot img { height: 100%; object-fit: cover; object-position: top; }
+.wide-scroll { display: grid; gap: 10px; }
+.wide-scroll figcaption { font-size: 13px; color: var(--faint); }
+.sides { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.sides div { padding: 20px; border-radius: 16px; border: 1px solid var(--edge); background: var(--surface); }
+.sides h3 { margin: 0 0 8px; font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: rgba(var(--blue), .95); }
+.sides p { margin: 0; color: var(--muted); font-size: 15px; }
+.loop { list-style: none; margin: 6px 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; counter-reset: l; }
+.loop li { position: relative; padding: 14px 14px 16px; border-radius: 14px; border: 1px solid var(--edge); background: var(--surface); display: grid; gap: 4px; counter-increment: l; }
+.loop li::before { content: counter(l, decimal-leading-zero); font: 400 11px var(--mono); color: var(--faint); }
+.loop li:not(:last-child)::after { content: "→"; position: absolute; right: -11px; top: 50%; translate: 0 -50%; z-index: 1; font-size: 13px; color: rgba(var(--blue), .9); background: var(--bg); padding: 2px 0; }
+.loop li:last-child { border-color: rgba(var(--blue), .45); box-shadow: 0 0 30px -10px var(--glow); }
+.loop b { font-weight: 500; font-size: 15px; }
+.loop span { font-size: 13px; color: var(--muted); }
+.personas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.personas div { padding: 20px; border-radius: 16px; border: 1px solid var(--edge); background: var(--surface); }
+.personas .main { border-color: rgba(var(--blue), .45); box-shadow: 0 0 40px -14px var(--glow); }
+.p-tag { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.personas .main .p-tag { color: rgba(var(--blue), .95); }
+.personas h3 { margin: 10px 0 6px; font-size: 22px; font-weight: 450; letter-spacing: -0.02em; }
+.personas p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.vs td:first-child { color: var(--faint) !important; font: 400 12px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+.vs td:last-child { color: var(--fg); }
+a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: rgba(var(--blue), .6); text-underline-offset: 3px; }
+@media (max-width: 900px) {
+  .loop { grid-template-columns: 1fr; }
+  .loop li:not(:last-child)::after { content: "↓"; right: auto; left: 18px; top: auto; bottom: -15px; translate: 0 0; }
+  .personas, .sides, .gallery { grid-template-columns: 1fr; }
+  .phones-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .phones-3, .phones-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .scroll-x { overflow-x: auto; }
+  .scroll-x img { width: 1400px; max-width: none; }
 }
 
 /* ============ Reveal ============ */

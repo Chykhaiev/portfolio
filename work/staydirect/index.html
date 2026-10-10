@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StayDirect — Case study — Oleksandr Chykhaiev</title>
+  <meta name="description" content="Turning past Airbnb guests into direct bookings. Sole designer on a US startup for about four years: host web app, guest mobile web app and design system." />
+  <meta name="theme-color" content="#0f0f10" />
+  <link rel="preload" href="../../fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body class="case-page">
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="top">
+    <a class="brand" href="../../" aria-label="Home">
+      <span class="brand-name">Oleksandr Chykhaiev</span>
+      <span class="brand-role">UI/UX &amp; AI Designer</span>
+    </a>
+    <nav class="pill" aria-label="Sections">
+      <span class="pill-glow" aria-hidden="true"></span>
+      <a href="../../#work" class="is-active">Work</a>
+      <a href="../../#about">About</a>
+      <a href="../../#experience">Experience</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <div class="top-links">
+      <a href="#" data-todo="linkedin" target="_blank" rel="noopener">LinkedIn <span class="ne" aria-hidden="true">↗</span></a>
+      <a href="#" data-todo="cv" target="_blank" rel="noopener">CV <span class="ne" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="wrap case-hero">
+      <a class="back" href="../../#work"><span aria-hidden="true">←</span> All work</a>
+      <p class="eyebrow">Case study · Real product, shown under NDA</p>
+      <h1 class="case-title">StayDirect</h1>
+      <p class="case-lead">Turning past Airbnb guests into <em>direct</em> bookings. I was the only designer on this US startup for about four years.</p>
+      <dl class="meta">
+        <div><dt>Role</dt><dd>Sole UX/UI designer, author of the design system</dd></div>
+        <div><dt>Team</dt><dd>Outsourced; worked with the founder and developers</dd></div>
+        <div><dt>Timeline</dt><dd>About 4 years, MVP launched in 2026</dd></div>
+        <div><dt>Scope</dt><dd>Host web app, guest mobile web app, design system (50+ components)</dd></div>
+      </dl>
+      <aside class="nda">
+        <span class="nda-tag">NDA</span>
+        <p>The real screens and product data are under NDA, so I can’t publish them. Everything below is re-created for this portfolio: the same flows and decisions, rebuilt in a new visual style with made-up content. Where a re-created screen differs from what shipped, I say so.</p>
+      </aside>
+    </section>
+
+    <figure class="wrap case-cover reveal">
+      <div class="cover-stage"><img src="../../img/staydirect/cover-screens.jpg" alt="Email marketing dashboard, booking page builder and two guest phone screens" width="1080" height="940" /></div>
+    </figure>
+
+    <div class="wrap case-layout">
+      <nav class="toc" aria-label="On this page">
+        <p class="label">On this page</p>
+        <ol>
+          <li><a href="#context">Context &amp; role</a></li>
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#system">Design system</a></li>
+          <li><a href="#decisions">Key decisions</a></li>
+          <li><a href="#final">Final UI</a></li>
+          <li><a href="#outcome">Outcome</a></li>
+        </ol>
+      </nav>
+
+      <article class="case-body">
+        <!-- 01 -->
+        <section id="context" class="cs">
+          <p class="cs-n">01</p>
+          <h2>Context &amp; my role</h2>
+          <p>StayDirect is a web platform for short-term rental hosts who want guests to book them directly instead of through Airbnb. The founder runs 80+ rental properties himself, so the product grew out of his own operations.</p>
+          <div class="sides">
+            <div><h3>Host side · desktop</h3><p>Import listings from Airbnb or Guesty, get an AI-written guest guidebook for each property, build a direct booking page, send email campaigns to past guests.</p></div>
+            <div><h3>Guest side · mobile web</h3><p>Online check-in before arrival, then a Guest Hub during the stay: door code, Wi-Fi, local tips, check-out steps.</p></div>
+          </div>
+          <p>I worked as an outsourced UX/UI designer and was the only designer for the whole project. I designed the product screens and built the design system. The client did not share user research; I worked from design tasks and the founder’s product logic.</p>
+          <p>Because I can’t show the shipped screens, I rebuilt five key flows from scratch for this case. I used it to look at my own work with fresh eyes: I wrote down the user picture as hypotheses, audited what shipped and rebuilt the design system.</p>
+        </section>
+
+        <!-- 02 -->
+        <section id="problem" class="cs">
+          <p class="cs-n">02</p>
+          <h2>Problem</h2>
+          <p>Airbnb owns the relationship with the guest. Hosts pay platform fees on every stay and can’t reach a guest again after check-out. StayDirect’s idea is a loop: collect guest emails through a helpful guidebook, then bring guests back to book directly.</p>
+          <ol class="loop" aria-label="The product loop">
+            <li><b>Import</b><span>listings</span></li>
+            <li><b>Guidebook</b><span>for every stay</span></li>
+            <li><b>Guest emails</b><span>collected</span></li>
+            <li><b>Campaign</b><span>to past guests</span></li>
+            <li><b>Direct booking</b><span>no Airbnb fee</span></li>
+          </ol>
+          <p>The loop only works if both sides find the product easy:</p>
+          <ul class="ticks">
+            <li><b>Hosts,</b> especially managers with dozens of units, need setup that scales. The shipped onboarding asked to configure listings one by one and only supported Airbnb.</li>
+            <li><b>Guests</b> need check-in to feel quick and safe. The shipped flow had 6 steps, a marketing survey in the middle and prices that changed between steps.</li>
+          </ul>
+          <p>The visual language had also drifted over four years: three different navigation menus, 5+ accent colours with no clear role and four icon styles. That made the product feel less trustworthy, which matters for a service that asks guests to pay outside Airbnb.</p>
+        </section>
+
+        <!-- 03 -->
+        <section id="research" class="cs">
+          <p class="cs-n">03</p>
+          <h2>Research (retrospective)</h2>
+          <p>Without access to user research, I rebuilt the user picture from the product brief, the design files, the founder’s profile and public market data. Everything here is a hypothesis, labelled as such.</p>
+          <div class="personas">
+            <div><span class="p-tag">Proto-persona</span><h3>Mike</h3><p>A small Airbnb host with a few listings.</p></div>
+            <div class="main"><span class="p-tag">Main host user</span><h3>Lisa</h3><p>A property manager with 20–100+ units in Guesty. Closest to the founder.</p></div>
+            <div><span class="p-tag">Proto-persona</span><h3>Anna</h3><p>A repeat traveller who books the same city again.</p></div>
+          </div>
+          <div class="table-wrap">
+            <table class="map">
+              <thead><tr><th>Artifact</th><th>What it showed</th></tr></thead>
+              <tbody>
+                <tr><td>Host CJM, 8 stages</td><td>Low points: sign-up friction, “is it even working?” while emails collect, writing campaigns</td></tr>
+                <tr><td>Guest CJM, 8 stages</td><td>Lowest point: online check-in. Second: finding the door code and Wi-Fi on arrival</td></tr>
+                <tr><td>Competitor analysis</td><td>Airbnb, Hostfully, Touch Stay, Enso Connect. Good guidebooks exist; the full loop for Airbnb and Guesty hosts does not</td></tr>
+                <tr><td>UX audit, 12 issues</td><td>3 high: navigation, check-in survey step, price mismatch. Medium: progress bugs, colour roles, CTA hierarchy, red Delete next to Edit</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The research set the priorities: scale for Lisa on the host side, speed and trust for Anna on the guest side, and one visual language for both.</p>
+        </section>
+
+        <!-- 04 -->
+        <section id="system" class="cs">
+          <p class="cs-n">04</p>
+          <h2>Design system: v1 to “Noir Ember”</h2>
+          <p>I built v1 during the project. Looking back, it had the right structure but loose rules: every semantic colour could be used anywhere, spacing was mostly hard-coded, and placeholder text failed contrast (2.5:1). For this case I rebuilt it as v2 and grew it together with the re-created screens.</p>
+          <figure class="solo">
+            <div class="shot"><img src="../../img/staydirect/style-tile.jpg" alt="Style tile: a dark hero card with blue glow, an ember gradient card, a white stats card and button styles" loading="lazy" width="1800" height="492" /></div>
+          </figure>
+          <div class="table-wrap">
+            <table class="map vs">
+              <thead><tr><th></th><th>v1</th><th>v2 “Noir Ember”</th></tr></thead>
+              <tbody>
+                <tr><td>Colour</td><td>5+ accents, no clear roles</td><td>One brand colour for actions (ember #FF6B2C), blue for highlights, neutrals, status colours</td></tr>
+                <tr><td>Tokens</td><td>No scopes, no code names</td><td>Primitives → semantic tokens, scoped, CSS names for developers</td></tr>
+                <tr><td>Contrast</td><td>Tertiary text 2.5:1, invisible disabled icons</td><td>Text 4.8:1+, dark text on ember buttons (6.8:1)</td></tr>
+                <tr><td>Type</td><td>Two families</td><td>Geist only: light for numbers and headlines, medium for UI</td></tr>
+                <tr><td>Components</td><td>Built page by page</td><td>50+ components with states, properties and generated docs</td></tr>
+                <tr><td>Icons</td><td>4 mixed styles</td><td>One outline set (Lucide), colour from tokens</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Every new element from the screens went back into the library, documented, before the screens were rebuilt on it. The system has <a class="inline" href="../../#work">its own case study</a>.</p>
+        </section>
+
+        <!-- 05 -->
+        <section id="decisions" class="cs">
+          <p class="cs-n">05</p>
+          <h2>Key decisions</h2>
+
+          <div class="decision">
+            <h3><span>1</span> Host onboarding: 7 screens to 4 steps that scale</h3>
+            <figure class="duo">
+              <div class="shot"><img src="../../img/staydirect/onb-1-source.jpg" alt="Step 1: choose Airbnb or Guesty as large option cards" loading="lazy" width="1440" height="960" /></div>
+              <div class="shot"><img src="../../img/staydirect/onb-3-import.jpg" alt="Step 3: all 86 units selected by default, with search, filters and statuses" loading="lazy" width="1440" height="1120" /></div>
+            </figure>
+            <ul class="ticks">
+              <li><b>Two sources, one choice.</b> Airbnb or Guesty as large option cards; the one for big portfolios carries a “Best for 20+ listings” badge.</li>
+              <li><b>Instant feedback.</b> Pasting a profile link shows the found host and “24 listings” before the user presses anything.</li>
+              <li><b>Everything selected by default.</b> An 86-unit import is “deselect what you don’t want”, with search, filters and a disabled row for already-imported units.</li>
+              <li><b>Set once for all.</b> Support email, Wi-Fi (pulled from Guesty) and check-in times apply to every listing. The shipped flow asked for them per listing.</li>
+              <li><b>No dead ends.</b> The import runs while the host fills in settings; the last screen gives three clear next steps.</li>
+            </ul>
+          </div>
+
+          <div class="decision">
+            <h3><span>2</span> Guest check-in: 6 steps to 4</h3>
+            <figure class="phones phones-4">
+              <div class="phone-shot"><img src="../../img/staydirect/ci-0-welcome.jpg" alt="Welcome: stay card, locked door code and the four steps" loading="lazy" width="393" height="1058" /></div>
+              <div class="phone-shot"><img src="../../img/staydirect/ci-2-verify.jpg" alt="Verify ID with a privacy note" loading="lazy" width="393" height="1132" /></div>
+              <div class="phone-shot"><img src="../../img/staydirect/ci-3-protection.jpg" alt="Protection: damage waiver or deposit as two cards, total shown" loading="lazy" width="393" height="1355" /></div>
+              <div class="phone-shot"><img src="../../img/staydirect/ci-5-done.jpg" alt="Done: door code unlocked with Wi-Fi and directions" loading="lazy" width="393" height="990" /></div>
+            </figure>
+            <ul class="ticks">
+              <li><b>Removed the survey step</b> and prefilled details from the Airbnb booking.</li>
+              <li><b>Clear money.</b> Damage waiver ($49, one-time) or deposit ($500 hold, not charged) as two cards; the total updates live and is repeated next to the button.</li>
+              <li><b>Fixed progress.</b> Four segments that match four steps. The shipped flow showed 100% on step 5 of 6.</li>
+              <li><b>A reason to finish.</b> A locked door code on the welcome screen; it unlocks on the last screen together with Wi-Fi and directions.</li>
+              <li><b>Trust at the right moment.</b> “Your host only sees Verified” next to the ID step.</li>
+            </ul>
+          </div>
+
+          <div class="decision">
+            <h3><span>3</span> Guest Hub: a home screen that follows the stay</h3>
+            <figure class="phones phones-3">
+              <div class="phone-shot"><img src="../../img/staydirect/hub-home.jpg" alt="Hub during the stay: door code, Wi-Fi and directions first" loading="lazy" width="393" height="1535" /></div>
+              <div class="phone-shot"><img src="../../img/staydirect/hub-access.jpg" alt="Check-in and access steps with codes" loading="lazy" width="393" height="1746" /></div>
+              <div class="phone-shot"><img src="../../img/staydirect/hub-checkout.jpg" alt="Check-out day: checklist and come back direct offer" loading="lazy" width="393" height="1425" /></div>
+            </figure>
+            <ul class="ticks">
+              <li><b>Door code and Wi-Fi first,</b> the two things guests search for most.</li>
+              <li><b>The screen changes with the trip:</b> during the stay, tips and guidebook; on check-out day, a checklist and the rebooking offer.</li>
+              <li><b>The business moment.</b> “Come back direct and save 10%” appears on check-out day, with a code to copy.</li>
+            </ul>
+          </div>
+
+          <div class="decision">
+            <h3><span>4</span> Booking page builder</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/staydirect/builder.jpg" alt="Booking page builder: settings on the left, live preview with the selected section outlined" loading="lazy" width="1440" height="1100" /></div></figure>
+            <ul class="ticks">
+              <li><b>Edit and preview side by side;</b> the selected section is outlined in the live preview.</li>
+              <li><b>AI as a helper, not the only way.</b> Suggestion chips fill the blank prompt; manual settings stay one click away.</li>
+              <li><b>A real reason to book direct.</b> The “save vs Airbnb” badge is calculated from the host’s own prices.</li>
+            </ul>
+          </div>
+
+          <div class="decision">
+            <h3><span>5</span> Email marketing dashboard</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/staydirect/marketing.jpg" alt="Email marketing dashboard: direct revenue first, campaigns with bookings, suggestions" loading="lazy" width="1440" height="1051" /></div></figure>
+            <ul class="ticks">
+              <li><b>Money first.</b> Direct revenue from email is the hero number; bookings and revenue sit in every campaign row.</li>
+              <li><b>Data-based suggestions</b> (“312 guests stayed last winter”) instead of an empty “create campaign”.</li>
+              <li><b>Safe actions.</b> Delete moved from a red button in each row into a “…” menu.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 06 -->
+        <section id="final" class="cs">
+          <p class="cs-n">06</p>
+          <h2>Final UI</h2>
+          <p>18 screens across both sides of the loop, all built from the v2 library.</p>
+          <figure class="solo wide-scroll">
+            <div class="shot scroll-x"><img src="../../img/staydirect/flows.jpg" alt="Two sides, one loop: host setup to booking page to email marketing, and guest check-in to hub to check-out, connected by the come back direct offer" loading="lazy" width="3802" height="1374" /></div>
+            <figcaption>The whole product on one board. On small screens, scroll it sideways.</figcaption>
+          </figure>
+          <h3 class="sub">Host onboarding</h3>
+          <div class="gallery">
+            <div class="shot"><img src="../../img/staydirect/onb-2-connect.jpg" alt="Connect: profile found with 24 listings" loading="lazy" width="1440" height="960" /></div>
+            <div class="shot"><img src="../../img/staydirect/onb-4-settings.jpg" alt="Basic settings applied to all listings" loading="lazy" width="1440" height="1214" /></div>
+            <div class="shot"><img src="../../img/staydirect/onb-5-done.jpg" alt="Done: three clear next steps" loading="lazy" width="1440" height="808" /></div>
+          </div>
+          <h3 class="sub">Guest side</h3>
+          <div class="phones phones-row">
+            <div class="phone-shot"><img src="../../img/staydirect/ci-1-details.jpg" alt="Your details, prefilled from Airbnb" loading="lazy" width="393" height="1488" /></div>
+            <div class="phone-shot"><img src="../../img/staydirect/ci-4-review.jpg" alt="Review and pay" loading="lazy" width="393" height="1223" /></div>
+            <div class="phone-shot"><img src="../../img/staydirect/hub-guide.jpg" alt="Local guide picked by the host" loading="lazy" width="393" height="1413" /></div>
+          </div>
+          <p class="note">States covered: selected and default option cards, found profile, rows needing attention and already imported, disabled limits on guest steppers, locked and unlocked door code, done and to-do checklist items.</p>
+        </section>
+
+        <!-- 07 -->
+        <section id="outcome" class="cs">
+          <p class="cs-n">07</p>
+          <h2>Outcome &amp; learnings</h2>
+          <p>I don’t have product metrics I can share, and the re-created flows were not tested in this form, so I don’t claim numbers. What the work produced:</p>
+          <ul class="ticks">
+            <li><b>A design system the product can grow on:</b> 50+ documented components, scoped tokens with CSS names, accessible contrast by default.</li>
+            <li><b>Five flows built around the real customer,</b> a host with dozens of units, instead of a single-listing host.</li>
+            <li><b>A clear product loop</b> on one board: guidebook → guest emails → campaign → direct booking.</li>
+          </ul>
+          <div class="learn">
+            <div><h3>No research is not a reason to skip it</h3><p>Proto-personas, CJMs and an audit made every decision traceable, even as hypotheses.</p></div>
+            <div><h3>A system grows best next to real screens</h3><p>Each flow added components; each component made the next flow faster.</p></div>
+            <div><h3>Trust is a UI problem too</h3><p>Clear money, one visual language and honest copy matter most where a guest pays outside Airbnb.</p></div>
+            <div><h3>Being the only designer</h3><p>Four years alone on a product taught me to document decisions, because nobody else would remember why a screen looks the way it does.</p></div>
+          </div>
+          <p><b>What I would test next:</b> the check-in flow with 5 guests (time to finish, drop-off per step) and the import step with 3 property managers.</p>
+        </section>
+      </article>
+    </div>
+
+    <section class="wrap next">
+      <a class="card next-card" href="../../#work" data-case="postpixel">
+        <span class="label">Next case</span>
+        <span class="next-title">PostPixel <span class="arrow" aria-hidden="true">→</span></span>
+        <span class="card-meta">AI social posts for local service businesses.</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>© 2026 Oleksandr Chykhaiev</p>
+    <p class="muted">Designed by me, built with Claude.</p>
+    <a href="#content">Back to top ↑</a>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="../../main.js" defer></script>
+</body>
+</html>
