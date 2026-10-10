@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Diamonds VPN — Case study — Oleksandr Chykhaiev</title>
+  <meta name="description" content="A concept redesign of the Diamonds VPN website, built as a live site with 3D and motion instead of static mockups." />
+  <meta name="theme-color" content="#0f0f10" />
+  <link rel="preload" href="../../fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body class="case-page">
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="top">
+    <a class="brand" href="../../" aria-label="Home">
+      <span class="brand-name">Oleksandr Chykhaiev</span>
+      <span class="brand-role">UI/UX &amp; AI Designer</span>
+    </a>
+    <nav class="pill" aria-label="Sections">
+      <span class="pill-glow" aria-hidden="true"></span>
+      <a href="../../#work" class="is-active">Work</a>
+      <a href="../../#about">About</a>
+      <a href="../../#experience">Experience</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <div class="top-links">
+      <a href="#" data-todo="linkedin" target="_blank" rel="noopener">LinkedIn <span class="ne" aria-hidden="true">↗</span></a>
+      <a href="#" data-todo="cv" target="_blank" rel="noopener">CV <span class="ne" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="content">
+    <!-- ===== Case hero ===== -->
+    <section class="wrap case-hero">
+      <a class="back" href="../../#work"><span aria-hidden="true">←</span> All work</a>
+      <p class="eyebrow">Case study · Concept, 2026</p>
+      <h1 class="case-title">Diamonds VPN</h1>
+      <p class="case-lead">A concept redesign of the Diamonds VPN website, built as a <em>live</em> site with 3D and motion instead of static mockups.</p>
+      <div class="case-actions">
+        <a class="btn btn-primary" href="https://diamonds-vpn-concept.vercel.app" target="_blank" rel="noopener">Open live site ↗</a>
+      </div>
+      <dl class="meta">
+        <div><dt>Role</dt><dd>UX/UI designer (solo)</dd></div>
+        <div><dt>Scope</dt><dd>Audit, structure, copy, art direction, motion, front-end build</dd></div>
+        <div><dt>Type</dt><dd>Concept, planned with the founder, not shipped</dd></div>
+        <div><dt>Tools</dt><dd>Figma, Three.js, GSAP, Lenis, Claude</dd></div>
+      </dl>
+    </section>
+
+    <figure class="wrap case-cover live reveal">
+      <div class="browser">
+        <div class="browser-bar"><i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i><span class="url">diamonds-vpn-concept.vercel.app</span><a class="bar-open" href="https://diamonds-vpn-concept.vercel.app" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+        <div class="live-frame">
+          <iframe data-src="https://diamonds-vpn-concept.vercel.app" title="Diamonds VPN live site" allow="fullscreen"></iframe>
+          <img class="live-poster" src="../../img/diamonds-hero.jpg" alt="The finished hero: a dotted 3D globe with the headline Private internet, one tap away" width="1440" height="900" />
+        </div>
+      </div>
+      <figcaption><span class="live-dot" aria-hidden="true"></span>This is the live site. Scroll and move the cursor inside the window; scroll outside it to keep reading.</figcaption>
+    </figure>
+
+    <!-- ===== Body with side index ===== -->
+    <div class="wrap case-layout">
+      <nav class="toc" aria-label="On this page">
+        <p class="label">On this page</p>
+        <ol>
+          <li><a href="#context">Context &amp; role</a></li>
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#decisions">Key decisions</a></li>
+          <li><a href="#final">Final site</a></li>
+          <li><a href="#outcome">Outcome</a></li>
+        </ol>
+      </nav>
+
+      <article class="case-body">
+        <!-- 01 -->
+        <section id="context" class="cs">
+          <p class="cs-n">01</p>
+          <h2>Context &amp; my role</h2>
+          <p>Diamonds VPN ran as a Telegram Mini App and was paid for in crypto (TON). I know the founder; we planned a redesign together, it kept getting postponed, and then the product closed. The original site is offline, and a Figma capture of its homepage is all that remains. I did not design the original.</p>
+          <p>I wrote the structure, copy and motion direction and reviewed every iteration in the browser. The code was written with Claude as an AI pair; my job was to decide what to build, judge each version and push it until it worked.</p>
+        </section>
+
+        <!-- 02 -->
+        <section id="problem" class="cs">
+          <p class="cs-n">02</p>
+          <h2>Problem</h2>
+          <p>The original homepage looked impressive but explained very little. I reviewed it as a first-time visitor with four questions: what is it, can I trust it, how much is it, how do I start. It answered none of them well.</p>
+          <div class="table-wrap">
+            <table class="issues">
+              <thead><tr><th>#</th><th>Issue</th><th>Severity</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>No navigation: no links to pricing, apps, help or log in</td><td><span class="sev high">High</span></td></tr>
+                <tr><td>2</td><td>The hero (“Your privacy shielded”) fits any VPN; nothing says Telegram or crypto</td><td><span class="sev high">High</span></td></tr>
+                <tr><td>3</td><td>“Flexible pricing” is promised, but no prices appear anywhere</td><td><span class="sev high">High</span></td></tr>
+                <tr><td>4</td><td>Platform icons have no names; Telegram, the main platform, is missing</td><td><span class="sev med">Medium</span></td></tr>
+                <tr><td>5</td><td>Crypto payment, the strongest differentiator, is buried in small card text</td><td><span class="sev med">Medium</span></td></tr>
+                <tr><td>6</td><td>The same paragraph appears twice; feature tiles repeat the grid</td><td><span class="sev med">Medium</span></td></tr>
+                <tr><td>7</td><td>The FAQ has no buying questions (price, how to pay)</td><td><span class="sev low">Low</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>For a VPN this matters twice: people won’t pay for a product they don’t understand, and they won’t trust a privacy product that looks vague. The brand also needed to feel premium. A dark page with a stock globe didn’t do that.</p>
+        </section>
+
+        <!-- 03 -->
+        <section id="process" class="cs">
+          <p class="cs-n">03</p>
+          <h2>Process</h2>
+          <ol class="steps">
+            <li><h3>Audit</h3><p>Pinned the issues above on the captured homepage and ranked them by how much they block a first purchase.</p></li>
+            <li><h3>First direction in Figma</h3><p>Four pages (Home, Pricing, Apps, Help), a 17-colour variable set, 11 text styles and a small UI kit. The structure worked. The look didn’t: it was clean but generic, and could have been any VPN template. I dropped the visual direction and kept the structure and copy.</p></li>
+            <li><h3>New reference</h3><p>I chose a dark, particle-based style: oversized type, glass cards, data shown as dots. I adapted it to the Diamonds brand: night blue, electric blue, cyan and the diamond itself.</p></li>
+            <li><h3>Live site instead of mockups</h3><p>The idea depended on motion and interaction, which static frames can’t show. I built it in the browser with Three.js and GSAP, working with Claude as an AI pair, and reviewed each version on desktop and mobile.</p></li>
+            <li><h3>Iterations</h3><p>Six rounds of review. The biggest changes: a larger centred globe; no dark scrim behind the hero text; and a particle layer that carries the hero’s look through the rest of the page.</p></li>
+          </ol>
+        </section>
+
+        <!-- 04 -->
+        <section id="decisions" class="cs">
+          <p class="cs-n">04</p>
+          <h2>Key decisions</h2>
+
+          <div class="decision">
+            <h3><span>1</span> Tell the brand story in the first six seconds</h3>
+            <figure class="duo">
+              <div class="browser"><img src="../../img/diamonds/intro-explode.jpg" alt="Intro: the neon diamond bursts into particles" loading="lazy" width="1440" height="900" /></div>
+              <div class="browser"><img src="../../img/diamonds-hero.jpg" alt="The particles rebuild into a dotted Earth behind the headline" loading="lazy" width="1440" height="900" /></div>
+              <figcaption>The diamond explodes into about 13,000 particles, which rebuild into the globe.</figcaption>
+            </figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>A neon diamond flies in, charges up and explodes into about 13,000 particles. The particles then rebuild into a dotted Earth, with real continents from Natural Earth data. The headline, “Private internet, one tap away”, appears over the globe with the line “VPN inside Telegram · paid in TON”.</dd></div>
+              <div><dt>Why</dt><dd>The name (Diamonds) and the promise (private access anywhere) become one picture. The headline still says plainly what the product is, which the original didn’t.</dd></div>
+              <div><dt>Rejected</dt><dd>Reusing the original’s static globe image, and placing the globe to the side of the text. A centred globe, large like a planet seen from orbit, made a stronger first screen.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>2</span> One particle world across the whole page</h3>
+            <figure class="duo">
+              <div class="browser"><img src="../../img/diamonds/why.jpg" alt="Why Diamonds bento with a constellation of particles behind it" loading="lazy" width="1440" height="900" /></div>
+              <div class="browser"><img src="../../img/diamonds/kinetic.jpg" alt="Moving text section with particles forming orbits" loading="lazy" width="1440" height="900" /></div>
+              <figcaption>The same dots form a constellation behind the features, then orbits behind the moving text.</figcaption>
+            </figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>After the hero, the same particles stay behind the content and change shape per section: a planet horizon, a constellation, orbits, a wireframe diamond behind pricing, and a small globe at the closing call to action. Cards are semi-transparent so the particles show through.</dd></div>
+              <div><dt>Why</dt><dd>In the first build the page went flat and dark right after the hero, and it read like two different sites. Carrying the particles through keeps the concept whole, and ending on the globe closes the story.</dd></div>
+              <div><dt>Rejected</dt><dd>Decorative gradients alone. They added colour but not continuity.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>3</span> A small diamond that travels with the visitor</h3>
+            <figure class="solo">
+              <div class="browser"><img src="../../img/diamonds/how.jpg" alt="How it works: three step cards with the small 3D diamond resting nearby" loading="lazy" width="1440" height="900" /></div>
+            </figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>After the hero, a small 3D diamond follows the scroll. It rests in empty space in each section and leans slightly toward the cursor. It lands on the corner of a card when you hover it, and it bursts into sparks when a main button is clicked.</dd></div>
+              <div><dt>Why</dt><dd>It ties the brand to every section and rewards exploring without adding text.</dd></div>
+              <div><dt>Trade-off</dt><dd>Motion can distract from reading. The diamond is small, sits in empty space, stays hidden on the hero, and has no hover behaviour on touch screens.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>4</span> One action everywhere: Open in Telegram</h3>
+            <figure class="solo">
+              <div class="browser"><img src="../../img/diamonds/apps.jpg" alt="Apps section: the Telegram Mini App first, with a phone mock" loading="lazy" width="1440" height="900" /></div>
+            </figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>The same gradient button in the nav, hero, apps card, pricing and closing section.</dd></div>
+              <div><dt>Why</dt><dd>The Mini App is where people pay and connect, so the website’s only job is to get people there. The original “Start Now” didn’t say where it led.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>5</span> Prices on the page, best value in the middle</h3>
+            <figure class="duo duo-mobile">
+              <div class="browser"><img src="../../img/diamonds/pricing.jpg" alt="Pricing: three plans with the 12-month plan raised in the centre" loading="lazy" width="1440" height="900" /></div>
+              <div class="phone-shot"><img src="../../img/diamonds/mobile-pricing.jpg" alt="On mobile the best-value plan comes first" loading="lazy" width="390" height="844" /></div>
+              <figcaption>Desktop puts the 12-month plan in the centre; on mobile it comes first.</figcaption>
+            </figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Three plans with one feature set; only the length changes. The 12-month plan sits in the centre, raised, with an animated border. On mobile it comes first.</dd></div>
+              <div><dt>Why</dt><dd>“Flexible pricing” with no numbers makes people leave to compare. When every plan has the same features, the only decision is how long.</dd></div>
+            </dl>
+          </div>
+        </section>
+
+        <!-- 05 -->
+        <section id="final" class="cs">
+          <p class="cs-n">05</p>
+          <h2>Final site</h2>
+          <p>One long homepage, live in the browser: it runs in the window at the top of this page. On phones the 3D scene is lighter.</p>
+          <figure class="phones">
+            <div class="phone-shot"><img src="../../img/diamonds/mobile-hero.jpg" alt="Mobile hero with a smaller globe" loading="lazy" width="390" height="844" /></div>
+            <div class="phone-shot"><img src="../../img/diamonds/mobile-pricing.jpg" alt="Mobile pricing with the best-value plan first" loading="lazy" width="390" height="844" /></div>
+            <figcaption>On phones: a smaller globe and fewer particles, plans stacked with the best value first.</figcaption>
+          </figure>
+
+          <div class="table-wrap">
+            <table class="map">
+              <thead><tr><th>Section</th><th>What it does</th><th>Particle shape behind it</th></tr></thead>
+              <tbody>
+                <tr><td>Hero</td><td>Diamond, explosion, globe; headline, subline, two buttons, Replay</td><td>The globe itself</td></tr>
+                <tr><td>Key facts</td><td>5 protocols, unlimited devices, 2 taps, 0 location limits</td><td>Planet horizon</td></tr>
+                <tr><td>How it works</td><td>Three steps, all inside Telegram</td><td>Planet horizon</td></tr>
+                <tr><td>Why Diamonds</td><td>Bento: protocols, devices, TON payment, locations</td><td>Constellation</td></tr>
+                <tr><td>Moving text</td><td>Large kinetic line that moves with the scroll</td><td>Orbits</td></tr>
+                <tr><td>Apps</td><td>Telegram Mini App first, with a phone mock; native apps as a list</td><td>Orbits</td></tr>
+                <tr><td>Pricing</td><td>Three plans, 12 months in the centre</td><td>Wireframe diamond</td></tr>
+                <tr><td>FAQ</td><td>Buying questions first: no TON, install, devices</td><td>Drifting stars</td></tr>
+                <tr><td>Closing CTA and footer</td><td>“Two taps to private.”</td><td>Small globe</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="sub">States and details covered</h3>
+          <ul class="ticks">
+            <li><b>Reduced motion:</b> the intro is skipped and the globe shows straight away; scroll animations are turned off.</li>
+            <li><b>Mobile:</b> smaller globe and particle counts, plans stacked with the best one first, no cursor effects.</li>
+            <li><b>Hover:</b> cards light up near the travelling diamond, buttons follow the cursor slightly, the phone mock tilts.</li>
+            <li><b>FAQ:</b> animated open and close.</li>
+            <li><b>Performance:</b> the hero scene stops rendering once it is scrolled out of view, 3D layers render at a fixed pixel budget so 4K screens stay smooth, and quality drops automatically on slow devices. The first 4K test stuttered between the hero and the next section; these changes fixed it.</li>
+          </ul>
+          <p class="note">Prices are placeholders for the concept and are labelled as such on the page. The footer says it is a concept redesign and that the product is no longer operating.</p>
+        </section>
+
+        <!-- 06 -->
+        <section id="outcome" class="cs">
+          <p class="cs-n">06</p>
+          <h2>Outcome &amp; learnings</h2>
+          <p>This is a concept, so there are no results to report. What it shows is how I take a product from “unclear and generic” to a site that explains itself and feels like the brand.</p>
+          <p><b>What is assumed (not from the original site):</b> plan prices and lengths, the “2 taps” claim, the city list on the locations card and the FAQ answers. A real project would confirm these with the team first.</p>
+          <div class="learn">
+            <div><h3>Motion needs a story, not effects</h3><p>The intro works because it says one thing: diamond becomes the world. Each particle shape later on had to earn its place the same way.</p></div>
+            <div><h3>The first screen sets a promise</h3><p>My first build had a strong hero and a flat page below it. Continuity mattered more than adding effects.</p></div>
+            <div><h3>Building in code changed how I design motion</h3><p>With AI-assisted coding I could judge real motion in the browser, not describe it in a prototype. Timing, scale and contrast were decided by looking, not guessing.</p></div>
+            <div><h3>Keep the structure, replace the look</h3><p>The audit and page structure from the Figma round carried straight into the live site.</p></div>
+          </div>
+          <p><b>What I would test next:</b> a 5-second test of the hero against the original (“what is this product?”), and frame rate on low-end Android phones, which I haven’t measured yet.</p>
+        </section>
+      </article>
+    </div>
+
+    <!-- ===== Next case ===== -->
+    <section class="wrap next">
+      <a class="card next-card" href="../../#work" data-case="collabro">
+        <span class="label">Next case</span>
+        <span class="next-title">Collabro <span class="arrow" aria-hidden="true">→</span></span>
+        <span class="card-meta">A networking app for offline events, from research to MVP.</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>© 2026 Oleksandr Chykhaiev</p>
+    <p class="muted">Designed by me, built with Claude.</p>
+    <a href="#content">Back to top ↑</a>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="../../main.js" defer></script>
+</body>
+</html>
