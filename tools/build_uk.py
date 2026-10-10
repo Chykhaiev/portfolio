@@ -44,8 +44,8 @@ T = [
     ('aria-label="Scroll to work"', 'aria-label="Прокрутити до робіт"'),
     # work
     (">Selected work<", ">Вибрані роботи<"),
-    ("<b>Outsourced, US startup</b> — Direct bookings for vacation rental hosts, from onboarding to guest check-in.",
-     "<b>Аутсорс, стартап зі США</b> — Прямі бронювання для власників орендного житла: від онбордингу до заселення гостей."),
+    ("<b>Sole designer, US startup</b> — Direct bookings for vacation rental hosts, from onboarding to guest check-in.",
+     "<b>Єдиний дизайнер, стартап зі США</b> — Прямі бронювання для власників орендного житла: від онбордингу до заселення гостей."),
     ("<b>postpixel.ai, 2025–26</b> — AI social posts for local service businesses.",
      "<b>postpixel.ai, 2025–26</b> — AI-пости для соцмереж локального сервісного бізнесу."),
     ("<b>v2 concept, 2026</b> — Tokens, 50 components and docs, rebuilt from scratch.",
@@ -57,7 +57,7 @@ T = [
     ('aria-hidden="true"></span>Live site</span>', 'aria-hidden="true"></span>Живий сайт</span>'),
     ('alt="Diamonds VPN concept: a dotted 3D globe with the headline Private internet, one tap away"',
      'alt="Концепт Diamonds VPN: 3D-глобус з точок і заголовок Private internet, one tap away"'),
-    ("<li>Product UI</li><li>Redesign</li><li>Research</li>", "<li>Продуктовий UI</li><li>Редизайн</li><li>Дослідження</li>"),
+    ("<li>Product UI</li><li>Design system</li><li>Research</li>", "<li>Продуктовий UI</li><li>Дизайн-система</li><li>Дослідження</li>"),
     ("<li>App UX/UI</li><li>UI kit</li><li>AI product</li>", "<li>UX/UI застосунку</li><li>UI kit</li><li>AI-продукт</li>"),
     ("<li>Design system</li><li>Figma variables</li>", "<li>Дизайн-система</li><li>Змінні Figma</li>"),
     ("<li>Web design</li><li>Motion &amp; 3D</li><li>Built with Claude</li>", "<li>Веб-дизайн</li><li>Анімація і 3D</li><li>Зроблено з Claude</li>"),
@@ -76,6 +76,7 @@ T = [
     ("<dt>Based in</dt><dd>Kyiv · UTC+3</dd>", "<dt>Локація</dt><dd>Київ · UTC+3</dd>"),
     # experience
     ('id="exp-h" class="label">Experience<', 'id="exp-h" class="label">Досвід<'),
+    ("<span>Sole UX/UI Designer, outsourced</span>", "<span>Єдиний UX/UI дизайнер, аутсорс</span>"),
     ("<span>UX/UI Designer, outsourced</span>", "<span>UX/UI дизайнер, аутсорс</span>"),
     ("<span>UX/UI Designer, team of 6</span>", "<span>UX/UI дизайнер, команда з 6 людей</span>"),
     ("App UX and UI, UI kit, clickable prototypes for user tests.", "UX і UI застосунку, UI kit, клікабельні прототипи для тестів з користувачами."),
