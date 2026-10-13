@@ -6,11 +6,10 @@ OUT = pathlib.Path('/home/claude/portfolio-preview'); OUT.mkdir(exist_ok=True)
 def d(path, mime): return f"data:{mime};base64," + base64.b64encode((P / path).read_bytes()).decode()
 css = (P / 'styles.css').read_text()
 for f, m in [("fonts/Geist-Variable.woff2", "font/woff2"), ("fonts/GeistMono-Variable.woff2", "font/woff2"),
-             ("fonts/InstrumentSerif-Italic.woff", "font/woff"), ("fonts/Cormorant-Italic-cyr.woff", "font/woff")]:
+             ("fonts/InstrumentSerif-Italic.woff", "font/woff")]:
     css = css.replace(f'url("{f}")', f'url("{d(f, m)}")')
 js = (P / 'main.js').read_text()
-for src, out, title, lang in [('index.html', 'portfolio-home.html', 'Oleksandr Chykhaiev Portfolio', 'en'),
-                              ('uk/index.html', 'portfolio-home-uk.html', 'Портфоліо Олександра Чихаєва', 'uk')]:
+for src, out, title, lang in [('index.html', 'portfolio-home.html', 'Oleksandr Chykhaiev Portfolio', 'en')]:
     h = (P / src).read_text()
     body = re.search(r'<body>(.*)</body>', h, re.S).group(1)
     body = re.sub(r'<script src="[^"]*main.js" defer></script>', '<script>' + js + '</script>', body)

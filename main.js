@@ -1,8 +1,7 @@
 // Portfolio home — small, dependency-free interactions.
 document.documentElement.classList.add('js');
 
-const UK = document.documentElement.lang === 'uk';
-const T = UK ? { copied: 'Email скопійовано', soon: 'Сторінка кейсу скоро буде' } : { copied: 'Email copied', soon: 'Case page coming soon' };
+const T = { copied: 'Email copied', soon: 'Case page coming soon' };
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
