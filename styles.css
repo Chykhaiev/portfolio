@@ -449,6 +449,7 @@ a:hover .ne { transform: translate(2px, -2px); }
 .phones .phone-shot { aspect-ratio: 393 / 852; }
 .phones .phone-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.gallery.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .gallery .shot { aspect-ratio: 3 / 2; }
 .gallery .shot img { height: 100%; object-fit: cover; object-position: top; }
 .wide-scroll { display: grid; gap: 10px; }
@@ -477,7 +478,7 @@ a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: 
 @media (max-width: 900px) {
   .loop { grid-template-columns: 1fr; }
   .loop li:not(:last-child)::after { content: "↓"; right: auto; left: 18px; top: auto; bottom: -15px; translate: 0 0; }
-  .personas, .sides, .gallery { grid-template-columns: 1fr; }
+  .personas, .sides, .gallery, .gallery.two { grid-template-columns: 1fr; }
   .phones-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {

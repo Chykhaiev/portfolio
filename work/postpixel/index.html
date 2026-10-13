@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PostPixel — Case study — Oleksandr Chykhaiev</title>
+  <meta name="description" content="Designing an AI social media app for local service businesses: from sign-up to a month of approved posts in one sitting." />
+  <meta name="theme-color" content="#0f0f10" />
+  <link rel="preload" href="../../fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body class="case-page">
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="top">
+    <a class="brand" href="../../" aria-label="Home">
+      <span class="brand-name">Oleksandr Chykhaiev</span>
+      <span class="brand-role">UI/UX &amp; AI Designer</span>
+    </a>
+    <nav class="pill" aria-label="Sections">
+      <span class="pill-glow" aria-hidden="true"></span>
+      <a href="../../#work" class="is-active">Work</a>
+      <a href="../../#about">About</a>
+      <a href="../../#experience">Experience</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <div class="top-links">
+      <a href="#" data-todo="linkedin" target="_blank" rel="noopener">LinkedIn <span class="ne" aria-hidden="true">↗</span></a>
+      <a href="#" data-todo="cv" target="_blank" rel="noopener">CV <span class="ne" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="wrap case-hero">
+      <a class="back" href="../../#work"><span aria-hidden="true">←</span> All work</a>
+      <p class="eyebrow">Case study · Real product, 2025–2026</p>
+      <h1 class="case-title">PostPixel</h1>
+      <p class="case-lead">Social media on autopilot for local service businesses: from sign-up to a month of approved posts <em>in one sitting</em>.</p>
+      <dl class="meta">
+        <div><dt>Role</dt><dd>Outsourced product designer, sole designer</dd></div>
+        <div><dt>Scope</dt><dd>Web app: IA, user flows, wireframes, UI Kit, final UI</dd></div>
+        <div><dt>Team</dt><dd>Founder (product, research), developers on his side</dd></div>
+        <div><dt>Live</dt><dd><a class="inline" href="https://www.postpixel.ai/" target="_blank" rel="noopener">postpixel.ai ↗</a></dd></div>
+      </dl>
+      <div class="stats-row" aria-label="In numbers">
+        <div><b>3</b><span>user flows</span></div>
+        <div><b>6</b><span>wireframes</span></div>
+        <div><b>17</b><span>desktop screens</span></div>
+        <div><b>8</b><span>core components</span></div>
+        <div><b>2</b><span>clickable prototypes</span></div>
+      </div>
+    </section>
+
+    <figure class="wrap case-cover reveal">
+      <div class="cover-stage"><img src="../../img/postpixel/home.jpg" alt="PostPixel Home: the month as a strip of days, a card with 8 posts that need an OK, a Facebook banner and results in plain words" width="1440" height="960" /></div>
+    </figure>
+
+    <div class="wrap case-layout">
+      <nav class="toc" aria-label="On this page">
+        <p class="label">On this page</p>
+        <ol>
+          <li><a href="#context">Context &amp; role</a></li>
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#decisions">Key decisions</a></li>
+          <li><a href="#final">Final UI</a></li>
+          <li><a href="#outcome">Outcome</a></li>
+        </ol>
+      </nav>
+
+      <article class="case-body">
+        <section id="context" class="cs">
+          <p class="cs-n">01</p>
+          <h2>Context &amp; my role</h2>
+          <p>PostPixel is a live web app that writes and designs social media posts for local service businesses with AI and publishes them on a schedule. The owner reviews and approves; the app does the rest.</p>
+          <p>I was the outsourced product designer and the only designer on the app. I designed it end to end: information architecture, user flows, wireframes, a UI Kit and the final UI. The founder owned research and product direction; I worked from his brief.</p>
+          <p>The screens show the latest iteration of my design. The live product is close to it, with some differences in details. The business in the screens (Bright Plumbing) and every number in the UI are sample data, not product results.</p>
+        </section>
+
+        <section id="problem" class="cs">
+          <p class="cs-n">02</p>
+          <h2>Problem</h2>
+          <p>Owners of small service businesses (plumbers, roofers, cleaners) know they should post regularly, but they have no time and no marketing skills. Posting stops after a few weeks, and the business looks inactive to people who check it before calling.</p>
+          <p>AI can already write and design posts. The hard part is trust and effort: owners will not use a tool that posts something wrong in their name, or one that takes an hour a week to manage.</p>
+          <div class="sides">
+            <div><h3>Design question</h3><p>How do we get an owner from sign-up to a month of approved posts in one sitting, and keep their weekly effort to a few minutes?</p></div>
+            <div><h3>Who it is for</h3><p>Mike, who owns a plumbing company, and Sara, who runs posting for several local clients. Both come from the founder’s brief; I did not validate them myself.</p></div>
+          </div>
+        </section>
+
+        <section id="process" class="cs">
+          <p class="cs-n">03</p>
+          <h2>Process highlights</h2>
+          <p>There was no research budget on my side, so I turned the founder’s brief into a few rules the whole team could check designs against: one job to be done and four principles.</p>
+          <figure class="solo"><div class="shot"><img src="../../img/postpixel/brief.jpg" alt="Brief board: Mike and Sara as assumptions from the founder's brief, three jobs to be done and four design principles" loading="lazy" width="1920" height="854" /></div></figure>
+          <ol class="steps">
+            <li><h3>Autopilot first</h3><p>The default is that posts go out; the owner steps in only when needed.</p></li>
+            <li><h3>Show results before asking</h3><p>Show generated posts before asking for setup details or payment.</p></li>
+            <li><h3>One home for every thing</h3><p>Each object (post, photo, brand setting) lives in one place only.</p></li>
+            <li><h3>Owner language</h3><p>“Posts”, “needs your OK”, “people saw your posts”. No “impressions” or “content pillars”.</p></li>
+          </ol>
+
+          <h3 class="sub">Information architecture</h3>
+          <p>Onboarding is a separate, linear space. The workspace has five sections an owner can name without thinking: Home, Create, Calendar, Library and Brand. Agencies switch businesses from the top bar. My Marketer was added later as an add-on section.</p>
+          <figure class="solo"><div class="shot"><img src="../../img/postpixel/ia.jpg" alt="Information architecture: onboarding in 4 steps, a workspace with five sections, and the account menu" loading="lazy" width="1920" height="933" /></div></figure>
+
+          <h3 class="sub">User flows</h3>
+          <p>I mapped three flows: the first run, the monthly loop and the My Marketer add-on. The flows decided which screens existed.</p>
+          <figure class="solo"><div class="shot"><img src="../../img/postpixel/flow-first.jpg" alt="First run flow: sign up, website or three quick questions, check brand, generating, approve posts, connect accounts, start autopilot" loading="lazy" width="1920" height="860" /></div></figure>
+          <figure class="solo"><div class="shot"><img src="../../img/postpixel/flow-loop.jpg" alt="Monthly loop: new month generated, Home asks for review, review and edit, calendar, published, results, and it repeats" loading="lazy" width="1920" height="820" /></div></figure>
+
+          <h3 class="sub">Wireframes</h3>
+          <p>Six wireframes tested layout before any visual work. Each numbered note is a decision I wanted the founder to agree on before we moved on.</p>
+          <figure class="solo wide-scroll">
+            <div class="shot scroll-x"><img src="../../img/postpixel/wireframes.jpg" alt="Wireframes for onboarding steps 1 and 3, Home, Create review, Calendar and Brand, with numbered notes" loading="lazy" width="2496" height="1495" /></div>
+            <figcaption>On small screens, scroll it sideways.</figcaption>
+          </figure>
+
+          <h3 class="sub">UI Kit, not a design system</h3>
+          <p>For a small team that needed to ship, I built a UI Kit: colour and type variables, 28 icons, and the components the screens actually use (Button, Status Pill, Tab, Input, Nav Item, Post Card, Toggle, Onboarding Progress).</p>
+          <figure class="solo"><div class="shot"><img src="../../img/postpixel/foundations.jpg" alt="UI Kit foundations: lime accent, dark and light neutrals, status colours and the type scale" loading="lazy" width="1440" height="660" /></div></figure>
+        </section>
+
+        <section id="decisions" class="cs">
+          <p class="cs-n">04</p>
+          <h2>Key decisions</h2>
+
+          <div class="decision">
+            <h3><span>1</span> Start from the website, not a form</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/postpixel/onb-1.jpg" alt="Onboarding step 1: one website field, the business found right below, and a link to answer three questions instead" loading="lazy" width="1440" height="960" /></div></figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Onboarding starts with one field: the business website. The app reads it and shows what it found right below (services, area, tone), and the owner only corrects it. There is a short path for businesses without a site.</dd></div>
+              <div><dt>Why</dt><dd>Owners don’t know how to describe their “brand voice”, but they can recognise it. Correcting is faster than writing.</dd></div>
+              <div><dt>Rejected</dt><dd>A 10-question setup form before the first post.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>2</span> Approve a few posts, not all of them</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/postpixel/onb-3.jpg" alt="Onboarding step 3: 2 of 12 posts approved, with Continue, review the rest later" loading="lazy" width="1440" height="1070" /></div></figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Step 3 shows the first posts and lets the owner approve some, then “Continue — review the rest later”. The rest wait in Create.</dd></div>
+              <div><dt>Why</dt><dd>Forcing all 12 approvals at sign-up turns the best moment (seeing your posts) into homework. Auto-posting without any review breaks trust.</dd></div>
+              <div><dt>Rejected</dt><dd>“Approve all to continue” and “publish without review”.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>3</span> Home answers one question: is my marketing running?</h3>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Home (shown at the top of this page) shows the month as a strip of days (posted, scheduled, today) and one card with the number of posts that need an OK. Results sit below, in owner words.</dd></div>
+              <div><dt>Why</dt><dd>The weekly visit is short. The owner needs status and one action, not a dashboard.</dd></div>
+              <div><dt>Rejected</dt><dd>An analytics-first home with charts.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>4</span> One place for posts, three ways to look at them</h3>
+            <figure class="duo">
+              <div class="shot"><img src="../../img/postpixel/review.jpg" alt="Create: posts filtered by status, two selected, with a bulk bar to reschedule, delete or approve" loading="lazy" width="1440" height="1274" /></div>
+              <div class="shot"><img src="../../img/postpixel/cal-month.jpg" alt="Calendar month view: every post as a preview with its status, one being dragged to another day" loading="lazy" width="1440" height="1437" /></div>
+            </figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Every post lives in Create. Review shows posts by status with bulk approve; Calendar shows the same posts by date with drag to reschedule; Library holds photos only.</dd></div>
+              <div><dt>Why</dt><dd>Principle 3. If a post can be in two lists, people stop trusting either.</dd></div>
+              <div><dt>Rejected</dt><dd>Separate “Drafts”, “Scheduled” and “Published” pages.</dd></div>
+            </dl>
+            <details class="more">
+              <summary>See the calendar before the founder’s feedback</summary>
+              <div class="shot"><img src="../../img/postpixel/cal-v1.jpg" alt="First version of the calendar: posts as small chips with a title and time" loading="lazy" width="1440" height="960" /></div>
+              <p class="muted">The first version showed posts as small chips. After the founder’s review, month cells show the post itself, with filters by platform.</p>
+            </details>
+          </div>
+
+          <div class="decision">
+            <h3><span>5</span> My Marketer plans in plain words, and the owner keeps the last word</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/postpixel/mm-plan.jpg" alt="My Marketer plan review: a one-page November plan, and a request in plain words that adds a Veterans Day post marked as new" loading="lazy" width="1440" height="1275" /></div></figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>The add-on writes a one-page monthly plan the owner can read in a minute. Changes are asked in plain words (“Add a post for Veterans Day”) and appear in the plan, marked as updated. Nothing is posted until the owner approves.</dd></div>
+              <div><dt>Why</dt><dd>Owners buy an outcome, not a chatbot. A document is easier to check than a conversation.</dd></div>
+              <div><dt>Rejected</dt><dd>A chat-only interface, where the plan is scattered across messages.</dd></div>
+            </dl>
+          </div>
+        </section>
+
+        <section id="final" class="cs">
+          <p class="cs-n">05</p>
+          <h2>Final UI</h2>
+          <p>The visual idea is <b>dark to welcome, light to work</b>. Onboarding and key moments are dark with a lime accent, in the style of the live product. The everyday workspace is light with a dark sidebar, so posts and their colours read clearly.</p>
+          <figure class="solo wide-scroll">
+            <div class="shot scroll-x"><img src="../../img/postpixel/flows.jpg" alt="Prototype flows board: first run, monthly loop and My Marketer, screen by screen" loading="lazy" width="2400" height="1079" /></div>
+            <figcaption>All three paths, screen by screen. Click any image to see it full size.</figcaption>
+          </figure>
+
+          <h3 class="sub">Onboarding</h3>
+          <div class="gallery">
+            <div class="shot"><img src="../../img/postpixel/onb-1.jpg" alt="Step 1, Business: the website read result" loading="lazy" width="1440" height="960" /></div>
+            <div class="shot"><img src="../../img/postpixel/onb-2.jpg" alt="Step 2, Brand: logo, colours and voice with a live post preview" loading="lazy" width="1440" height="960" /></div>
+            <div class="shot"><img src="../../img/postpixel/onb-4.jpg" alt="Step 4, Go live: connected accounts, a Facebook not connected state and posting days" loading="lazy" width="1440" height="960" /></div>
+          </div>
+          <h3 class="sub">Workspace</h3>
+          <div class="gallery">
+            <div class="shot"><img src="../../img/postpixel/edit.jpg" alt="Edit post dialog: caption with AI rewrite chips, background, date and channels, live preview" loading="lazy" width="1440" height="960" /></div>
+            <div class="shot"><img src="../../img/postpixel/library.jpg" alt="Library: upload drop zone and photos tagged by job, before and after, and team" loading="lazy" width="1440" height="960" /></div>
+            <div class="shot"><img src="../../img/postpixel/brand.jpg" alt="Brand: business details, voice and words to never say, with a preview of the next post" loading="lazy" width="1440" height="960" /></div>
+          </div>
+          <h3 class="sub">My Marketer add-on</h3>
+          <div class="gallery two">
+            <div class="shot"><img src="../../img/postpixel/mm-upsell.jpg" alt="Upsell: what My Marketer does, sample output and its price next to a part-time marketer and an agency" loading="lazy" width="1440" height="1181" /></div>
+            <div class="shot"><img src="../../img/postpixel/mm-planning.jpg" alt="Loading state: planning shown as a list of steps instead of a spinner" loading="lazy" width="1440" height="960" /></div>
+            <div class="shot"><img src="../../img/postpixel/mm-home.jpg" alt="My Marketer home: ask in your own words, the month plan, and everything that needs the owner in one list" loading="lazy" width="1440" height="1096" /></div>
+            <div class="shot"><img src="../../img/postpixel/mm-report.jpg" alt="Monthly report: one-sentence summary, four numbers, what worked and what changes next month" loading="lazy" width="1440" height="960" /></div>
+          </div>
+          <ul class="ticks">
+            <li><b>States, not only happy paths.</b> No website, account not connected, partial approval, multi-select, drag in progress, loading as a step list, plan updated after a request.</li>
+            <li><b>Sample labels.</b> Upsell previews are marked “Sample”, so the owner never mistakes an example for their own results.</li>
+          </ul>
+        </section>
+
+        <section id="outcome" class="cs">
+          <p class="cs-n">06</p>
+          <h2>Outcome &amp; learnings</h2>
+          <p><b>What exists now:</b> PostPixel is a live product at <a class="inline" href="https://www.postpixel.ai/" target="_blank" rel="noopener">postpixel.ai</a>, and the onboarding and My Marketer flows exist as clickable prototypes the founder can test with users. I don’t have usage data from the product, so this case shows no result metrics.</p>
+          <div class="learn">
+            <div><h3>Principles beat taste in reviews</h3><p>Without research of my own, “one home for every thing” and “owner language” gave the founder and me a shared way to judge a screen, instead of arguing about preferences.</p></div>
+            <div><h3>The first win matters more than the full setup</h3><p>Letting owners approve a few posts and move on felt riskier than forcing all approvals, but it keeps the best moment of onboarding short.</p></div>
+            <div><h3>AI features need a document, not only a chat</h3><p>For My Marketer, a readable plan made the AI’s work checkable. Chat stayed, but as the way to change the plan.</p></div>
+            <div><h3>What I would test next</h3><p>Time from sign-up to the first approved post, how many owners use “review the rest later” and come back, and whether owners read the monthly report.</p></div>
+          </div>
+        </section>
+      </article>
+    </div>
+
+    <section class="wrap next">
+      <a class="card next-card" href="../design-system/">
+        <span class="label">Next case</span>
+        <span class="next-title">StayDirect Design System <span class="arrow" aria-hidden="true">→</span></span>
+        <span class="card-meta">Tokens, 50 components and docs, rebuilt next to the product.</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>© 2026 Oleksandr Chykhaiev</p>
+    <p class="muted">Designed by me, built with Claude.</p>
+    <a href="#content">Back to top ↑</a>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="../../main.js" defer></script>
+</body>
+</html>
