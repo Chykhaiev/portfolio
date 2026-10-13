@@ -168,6 +168,8 @@ a:hover .ne { transform: translate(2px, -2px); }
 .cover-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .cover-dark { background: #0b0b0d; }
 .cover-dark img { object-position: center top; }
+.cover.cover-fit { aspect-ratio: 16 / 9 !important; }
+.cover-fit img { object-fit: contain; }
 .cover-light { background: #f1f2f4; display: grid; place-items: center; }
 .cover-light img { height: auto; object-fit: contain; padding: 6%; }
 .card:hover .cover-img img { transform: scale(1.025); }
