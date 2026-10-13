@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StayDirect Design System — Case study — Oleksandr Chykhaiev</title>
+  <meta name="description" content="Rebuilding a design system next to the product: tokens, 50 components with docs, and the checks that keep them honest." />
+  <meta name="theme-color" content="#0f0f10" />
+  <link rel="preload" href="../../fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body class="case-page">
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="top">
+    <a class="brand" href="../../" aria-label="Home">
+      <span class="brand-name">Oleksandr Chykhaiev</span>
+      <span class="brand-role">UI/UX &amp; AI Designer</span>
+    </a>
+    <nav class="pill" aria-label="Sections">
+      <span class="pill-glow" aria-hidden="true"></span>
+      <a href="../../#work" class="is-active">Work</a>
+      <a href="../../#about">About</a>
+      <a href="../../#experience">Experience</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <div class="top-links">
+      <a href="#" data-todo="linkedin" target="_blank" rel="noopener">LinkedIn <span class="ne" aria-hidden="true">↗</span></a>
+      <a href="#" data-todo="cv" target="_blank" rel="noopener">CV <span class="ne" aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="wrap case-hero">
+      <a class="back" href="../../#work"><span aria-hidden="true">←</span> All work</a>
+      <p class="eyebrow">Case study · Design system, 2026</p>
+      <h1 class="case-title">StayDirect Design System</h1>
+      <p class="case-lead">Rebuilding a design system <em>next to</em> the product: tokens, 50 components with docs, and the checks that keep them honest.</p>
+      <dl class="meta">
+        <div><dt>Role</dt><dd>UX/UI designer, author of v1 and v2</dd></div>
+        <div><dt>Scope</dt><dd>Tokens, type, 50 components, documentation, audits</dd></div>
+        <div><dt>Tools</dt><dd>Figma variables, Figma Plugin API, Claude</dd></div>
+        <div><dt>Status</dt><dd>v2 is a concept; not yet adopted by the product team</dd></div>
+      </dl>
+      <div class="stats-row" aria-label="In numbers">
+        <div><b>51</b><span>primitive values</span></div>
+        <div><b>103</b><span>semantic tokens</span></div>
+        <div><b>50</b><span>components</span></div>
+        <div><b>410</b><span>variants</span></div>
+        <div><b>104</b><span>icons, one style</span></div>
+      </div>
+    </section>
+
+    <figure class="wrap case-cover reveal">
+      <div class="cover-stage"><img src="../../img/ds/cover.jpg" alt="Components from the library: buttons, stat cards, an option card, a promo code and a stepper" width="1080" height="920" /></div>
+    </figure>
+
+    <div class="wrap case-layout">
+      <nav class="toc" aria-label="On this page">
+        <p class="label">On this page</p>
+        <ol>
+          <li><a href="#context">Context &amp; role</a></li>
+          <li><a href="#problem">Problem</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#decisions">Key decisions</a></li>
+          <li><a href="#quality">Quality checks</a></li>
+          <li><a href="#outcome">Outcome</a></li>
+        </ol>
+      </nav>
+
+      <article class="case-body">
+        <section id="context" class="cs">
+          <p class="cs-n">01</p>
+          <h2>Context &amp; my role</h2>
+          <p>StayDirect is a web platform that helps short-term rental hosts turn past Airbnb guests into direct bookings: a desktop app for hosts and a mobile web app for guests. I was the only designer on it for about four years and built its first design system (v1).</p>
+          <p>The product screens are under NDA, so for my portfolio I re-created five key flows in a new visual style (see the <a class="inline" href="../staydirect/">StayDirect case</a>). Before rebuilding any screen, I rebuilt the design system as v2 “Noir Ember” and grew it together with the screens. This case is about that system.</p>
+        </section>
+
+        <section id="problem" class="cs">
+          <p class="cs-n">02</p>
+          <h2>Problem</h2>
+          <p>v1 had the right structure, with primitive and semantic tokens and documented components, but loose rules. A system with loose rules looks consistent in the library and drifts in the product.</p>
+          <figure class="solo"><div class="shot"><img src="../../img/ds/starting-point.jpg" alt="Audit of v1: no scopes, 2.5:1 placeholder contrast, 0 of 100 spacing values bound, 140 variants in one Button, and the v2 fix for each" loading="lazy" width="1740" height="450" /></div></figure>
+          <p>For a product that asks guests to pay outside Airbnb, visual inconsistency is not cosmetic: it lowers trust at the moment of payment.</p>
+        </section>
+
+        <section id="process" class="cs">
+          <p class="cs-n">03</p>
+          <h2>Process</h2>
+          <ol class="steps">
+            <li><h3>Audit v1</h3><p>Listed what to keep (two token layers, component docs) and what to fix (above).</p></li>
+            <li><h3>Direction</h3><p>Picked four references for the new style (dark hero cards, light large numbers, pill tabs, airy bento layouts) and turned them into one style tile, “Noir Ember”.</p></li>
+            <li><h3>Foundations</h3><p>4 variable collections: primitives (33 colours, 18 numbers) hidden from pickers, and semantic tokens (66 colours, 37 numbers) named by role, scoped, with CSS names. Geist for all type, 16 text styles. Radius and spacing scales as tokens; gaps and paddings are separate sets.</p></li>
+            <li><h3>Component recipe</h3><p>Variant properties only for what changes the look; booleans and instance swaps for content; hover, focus and pressed from overlay tokens; a documentation page with usage, properties, the full variant matrix and the tokens it uses.</p></li>
+            <li><h3>Grow with the flows</h3><p>The library was not finished before the screens. Each flow added what it needed and documented it before its screens were rebuilt on it (v2.0 → v2.5).</p></li>
+            <li><h3>Audit again</h3><p>A scripted quality pass on the whole library (v2.6, below).</p></li>
+          </ol>
+          <figure class="solo"><div class="shot"><img src="../../img/ds/foundations.jpg" alt="Foundations: 51 primitives to 103 semantic tokens to 50 components, one value traced end to end, type, radius and spacing scales" loading="lazy" width="1740" height="810" /></div></figure>
+        </section>
+
+        <section id="decisions" class="cs">
+          <p class="cs-n">04</p>
+          <h2>Key decisions</h2>
+
+          <div class="decision">
+            <h3><span>1</span> Ember is the only action colour, with dark text</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/ds/color-decisions.jpg" alt="White text on ember fails contrast at 2.84:1; near-black passes at 6.92:1. Blue is used only for highlights" loading="lazy" width="1740" height="370" /></div></figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Every primary button, link, focus ring and selected tab uses ember #FF6B2C, and labels on ember are near-black.</dd></div>
+              <div><dt>Why</dt><dd>White text on ember is 2.84:1 and fails WCAG AA; near-black is 6.92:1. One clickable colour is also one rule users learn once.</dd></div>
+              <div><dt>Rejected</dt><dd>White-on-orange buttons (the common default) and a second brand colour for actions.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>2</span> Blue only highlights</h3>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Blue marks what to notice (key numbers, badges, the glow on dark hero cards) and is never clickable.</dd></div>
+              <div><dt>Why</dt><dd>In v1, five accents competed for attention. Splitting “act” and “notice” into two colours made screens easier to scan.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>3</span> Components can only see semantic tokens</h3>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Primitives are hidden from pickers; components use scoped semantic tokens with CSS names.</dd></div>
+              <div><dt>Why</dt><dd>A scope stops mistakes at the moment of picking, and the CSS name gives developers the same word the designer used.</dd></div>
+              <div><dt>Rejected</dt><dd>One flat token list: simpler on day one, impossible to change later.</dd></div>
+            </dl>
+          </div>
+
+          <div class="decision">
+            <h3><span>4</span> Separate Button and Icon Button</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/ds/button-matrix.jpg" alt="Button variant matrix: 5 types by 5 states, with its properties and rules" loading="lazy" width="1740" height="530" /></div></figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Two components with the same three properties (type, size, state) instead of one 140-variant set.</dd></div>
+              <div><dt>Why</dt><dd>Fewer properties per set make the right variant easy to find; both stay in sync through shared tokens.</dd></div>
+            </dl>
+            <details class="more">
+              <summary>See the generated documentation page</summary>
+              <div class="shot"><img src="../../img/ds/button-docs.jpg" alt="Button documentation page: usage, properties and variants" loading="lazy" width="1740" height="1260" /></div>
+            </details>
+          </div>
+
+          <div class="decision">
+            <h3><span>5</span> Build the library next to the screens</h3>
+            <figure class="solo"><div class="shot"><img src="../../img/ds/growing.jpg" alt="Releases v2.0 to v2.6: each flow added its components; 50 components, 410 variants, 104 icons, 17 documented component pages" loading="lazy" width="1740" height="610" /></div></figure>
+            <dl class="dec">
+              <div><dt>Decided</dt><dd>Each flow adds its components, documented, before its screens are rebuilt on them.</dd></div>
+              <div><dt>Why</dt><dd>Components designed in a vacuum miss real content and real states. Components pulled from real screens get used.</dd></div>
+              <div><dt>Rejected</dt><dd>Finishing the full library before starting the flows.</dd></div>
+            </dl>
+          </div>
+        </section>
+
+        <section id="quality" class="cs">
+          <p class="cs-n">05</p>
+          <h2>Quality checks</h2>
+          <p>I ran scripted audits on every component through the Figma Plugin API, with an AI assistant writing and running the scripts. Each check answers one question: does this component really use the system, or does it only look like it does?</p>
+          <figure class="solo"><div class="shot"><img src="../../img/ds/quality.jpg" alt="Audit results: colours 96%, spacing 98%, text 100%, radius 60% to 93%, and the four bugs the checks caught with their fixes" loading="lazy" width="1740" height="750" /></div></figure>
+          <ul class="ticks">
+            <li><b>Collapsed auto-layout.</b> Some components collapsed to 10px when resized. They looked fine on the docs page and broke in screens. Fixed with hug sizing and a re-check of every variant.</li>
+            <li><b>Icon colours after the icon swap.</b> Replacing the icon library left old colours inside Button and Icon Button. Fixed by binding icon colours to icon tokens per type and state.</li>
+            <li><b>Docs out of sync.</b> The token board still showed 10 old names and missed 5 new tokens. Labels are now rebuilt from the real variables.</li>
+            <li><b>224 raw radii.</b> Pills and chips used a raw 999 radius. Now bound to corner-full.</li>
+          </ul>
+        </section>
+
+        <section id="outcome" class="cs">
+          <p class="cs-n">06</p>
+          <h2>Outcome &amp; learnings</h2>
+          <p><b>What exists now:</b> a published Figma library with 50 documented components, 154 variables (51 primitives, 103 scoped semantic tokens with CSS names), and 18 re-created screens built only from it. The product team has not adopted v2 yet, so I don’t claim delivery-speed or consistency metrics from production.</p>
+          <div class="learn">
+            <div><h3>Rules matter more than parts</h3><p>v1 had most of the parts. What it lacked were rules that stop mistakes: scopes, one action colour, contrast by default.</p></div>
+            <div><h3>A system grows best next to real screens</h3><p>Each flow added components; each component made the next flow faster.</p></div>
+            <div><h3>Audit the system like a product</h3><p>A library can look perfect on its docs page and still be full of hard-coded values. Scripted checks found bugs I would never see by eye.</p></div>
+            <div><h3>What I would do from day one</h3><p>Set scopes when creating each variable, keep gaps and paddings as separate sets, and run the audit after every release.</p></div>
+          </div>
+        </section>
+      </article>
+    </div>
+
+    <section class="wrap next">
+      <a class="card next-card" href="../diamonds-vpn/">
+        <span class="label">Next case</span>
+        <span class="next-title">Diamonds VPN <span class="arrow" aria-hidden="true">→</span></span>
+        <span class="card-meta">A live 3D website, designed by me and built with AI-assisted code.</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>© 2026 Oleksandr Chykhaiev</p>
+    <p class="muted">Designed by me, built with Claude.</p>
+    <a href="#content">Back to top ↑</a>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="../../main.js" defer></script>
+</body>
+</html>

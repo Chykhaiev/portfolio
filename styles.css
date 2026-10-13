@@ -486,6 +486,27 @@ a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: 
   .scroll-x img { width: 1400px; max-width: none; }
 }
 
+.stats-row { width: 100%; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 6px; }
+.stats-row div { padding: 16px 18px; border-radius: 14px; border: 1px solid var(--edge); background: var(--surface); display: grid; gap: 4px; }
+.stats-row b { font-size: clamp(26px, 3vw, 36px); font-weight: 400; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.stats-row span { font-size: 13px; color: var(--muted); }
+.more { border: 1px solid var(--edge); border-radius: 14px; padding: 0 16px; }
+.more summary { cursor: pointer; padding: 14px 0; font-size: 14.5px; color: var(--fg); list-style: none; display: flex; align-items: center; gap: 10px; }
+.more summary::-webkit-details-marker { display: none; }
+.more summary::before { content: "+"; font: 400 16px var(--mono); color: rgba(var(--blue), .95); width: 14px; }
+.more[open] summary::before { content: "−"; }
+.more .shot { margin-bottom: 16px; }
+@media (max-width: 900px) { .stats-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.case-body .shot img, .case-body .phone-shot img { cursor: zoom-in; }
+.lightbox { position: fixed; inset: 0; z-index: 80; background: rgba(8,8,10,.92); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); display: none; }
+.lightbox.open { display: block; }
+.lb-scroll { position: absolute; inset: 0; overflow: auto; display: grid; place-items: center; padding: 64px 24px 32px; }
+.lb-scroll img { max-width: min(1800px, 100%); height: auto; border-radius: 12px; box-shadow: 0 0 0 1px var(--edge), 0 40px 120px -30px rgba(var(--blue), .4); cursor: zoom-out; }
+.lb-close { position: fixed; top: 16px; right: 16px; z-index: 1; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--edge-2); background: rgba(40,40,44,.8); color: var(--fg); font-size: 24px; line-height: 1; cursor: pointer; }
+.lb-lock, .lb-lock body { overflow: hidden; }
+
 /* ============ Reveal ============ */
 .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
 .js .reveal.in { opacity: 1; transform: none; }

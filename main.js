@@ -93,3 +93,28 @@ if (toc.length) {
 if (window.matchMedia('(min-width: 601px)').matches) {
   document.querySelectorAll('iframe[data-src]').forEach((f) => { f.src = f.dataset.src; });
 }
+
+// ---- lightbox: click a case image to see it full size ----
+const shots = document.querySelectorAll('.case-body .shot img, .case-body .phone-shot img');
+if (shots.length) {
+  const box = document.createElement('div');
+  box.className = 'lightbox';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-modal', 'true');
+  box.setAttribute('aria-label', 'Image preview');
+  box.innerHTML = '<button class="lb-close" type="button" aria-label="Close">×</button><div class="lb-scroll"><img alt="" /></div>';
+  document.body.appendChild(box);
+  const big = box.querySelector('img');
+  let last = null;
+  const close = () => { box.classList.remove('open'); document.documentElement.classList.remove('lb-lock'); if (last) last.focus(); };
+  shots.forEach((img) => {
+    img.tabIndex = 0;
+    img.setAttribute('role', 'button');
+    img.setAttribute('aria-label', `Enlarge: ${img.alt}`);
+    const open = () => { last = img; big.src = img.currentSrc || img.src; big.alt = img.alt; box.classList.add('open'); document.documentElement.classList.add('lb-lock'); box.querySelector('.lb-close').focus(); };
+    img.addEventListener('click', open);
+    img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+  box.addEventListener('click', (e) => { if (e.target === box || e.target.classList.contains('lb-close') || e.target.classList.contains('lb-scroll')) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && box.classList.contains('open')) close(); });
+}
