@@ -1,0 +1,113 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+* { margin: 0; box-sizing: border-box; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; }
+body { position: relative; background:
+  radial-gradient(ellipse 820px 560px at 58% 50%, rgba(203,236,121,.30), rgba(203,236,121,.09) 45%, rgba(0,0,0,0) 72%),
+  radial-gradient(ellipse 1500px 950px at 50% 45%, #191b16 0%, #0d0e0b 58%, #070806 100%); }
+canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+.grain { position: absolute; inset: 0; opacity: .07; mix-blend-mode: overlay; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+.vign { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 55% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,.5) 100%); }
+</style>
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js"}}</script>
+</head><body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<div class="vign"></div><div class="grain"></div>
+<script type="module">
+import * as THREE from 'three';
+const P = new URLSearchParams(location.search);
+const SCREEN = P.get('img') || 'img/collabro/bubble.jpg';
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(+(P.get('dpr')||1));
+renderer.setSize(1920, 1080, false);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+
+// ---- studio environment (softboxes) ----
+const env = new THREE.Scene();
+env.add(new THREE.Mesh(new THREE.BoxGeometry(400, 400, 400), new THREE.MeshBasicMaterial({ color: 0x1a1b18, side: THREE.BackSide })));
+function softbox(w, h, pos, look, color, k) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(k), side: THREE.DoubleSide }));
+  m.position.set(...pos); m.lookAt(...look); env.add(m);
+}
+softbox(160, 60, [-60, 120, 80], [0, 0, 0], 0xffffff, 4.0);   // top-left key strip
+softbox(60, 260, [-160, 0, 40], [0, 0, 0], 0xffffff, 3.5);
+softbox(260, 50, [0, 170, 0], [0, 0, 0], 0xffffff, 2.5);   // left tall strip -> frame highlight
+softbox(60, 200, [170, 20, 20], [0, 0, 0], 0xcbec79, 1.6);   // right lime rim
+softbox(200, 40, [0, -150, 60], [0, 0, 0], 0x9aa08f, 0.6);   // floor bounce
+softbox(80, 80, [40, 60, 180], [0, 0, 0], 0xffffff, 1.2);    // front fill
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(env, 0.02, 0.1, 1000).texture;
+
+// ---- phone geometry (mm) ----
+const W = 71.5, H = 147.6, D = 8.25, R = 11.2;
+function rrect(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0);
+  s.lineTo(x + w, y + h - r); s.absarc(x + w - r, y + h - r, r, 0, Math.PI / 2);
+  s.lineTo(x + r, y + h); s.absarc(x + r, y + h - r, r, Math.PI / 2, Math.PI);
+  s.lineTo(x, y + r); s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5);
+  return s;
+}
+const bev = 1.5;
+const bodyGeo = new THREE.ExtrudeGeometry(rrect(W - bev * 2, H - bev * 2, R - bev), { depth: D - bev * 2, bevelEnabled: true, bevelThickness: bev, bevelSize: bev, bevelSegments: 12, curveSegments: 64 });
+bodyGeo.translate(0, 0, -(D - bev * 2) / 2);
+const titanium = new THREE.MeshPhysicalMaterial({ color: 0x9a9c95, metalness: 1, roughness: 0.36, clearcoat: 0.3, clearcoatRoughness: 0.25 });
+const phone = new THREE.Group(); scene.add(phone);
+phone.add(new THREE.Mesh(bodyGeo, titanium));
+const front = D / 2;
+
+// black glass / bezel
+const glassGeo = new THREE.ShapeGeometry(rrect(W - 1.0, H - 1.0, R - 0.5), 64);
+const bezel = new THREE.Mesh(glassGeo, new THREE.MeshBasicMaterial({ color: 0x050505 }));
+bezel.position.z = front + 0.01; phone.add(bezel);
+
+// screen
+const SW = W - 4.4, SH = H - 4.4, SR = R - 2.2;
+const scrGeo = new THREE.ShapeGeometry(rrect(SW, SH, SR), 64);
+const uv = scrGeo.attributes.uv, pos = scrGeo.attributes.position;
+for (let i = 0; i < uv.count; i++) uv.setXY(i, pos.getX(i) / SW + 0.5, pos.getY(i) / SH + 0.5);
+const img = new Image(); img.src = SCREEN; await img.decode();
+const cv = document.createElement('canvas'); cv.width = 1179; cv.height = Math.round(1179 * SH / SW);
+const g = cv.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, cv.width, cv.height);
+g.drawImage(img, 0, 0, cv.width, cv.width * img.height / img.width);
+// dynamic island
+const s = cv.width / SW; const iw = 20.5 * s, ih = 6.1 * s, iy = 1.75 * s;
+g.fillStyle = '#000'; g.beginPath(); g.roundRect((cv.width - iw) / 2, iy, iw, ih, ih / 2); g.fill();
+const cam = g.createRadialGradient(cv.width / 2 + iw / 2 - ih / 2 - 4, iy + ih / 2, 1, cv.width / 2 + iw / 2 - ih / 2, iy + ih / 2, ih * 0.32);
+cam.addColorStop(0, '#2f3a58'); cam.addColorStop(1, '#050608');
+g.fillStyle = cam; g.beginPath(); g.arc(cv.width / 2 + iw / 2 - ih / 2, iy + ih / 2, ih * 0.3, 0, Math.PI * 2); g.fill();
+const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 16;
+const screen = new THREE.Mesh(scrGeo, new THREE.MeshBasicMaterial({ map: tex, toneMapped: false }));
+screen.position.z = front + 0.02; phone.add(screen);
+
+// glass reflection layer
+const refl = new THREE.Mesh(glassGeo, new THREE.MeshPhysicalMaterial({ color: 0x000000, roughness: 0.04, metalness: 0, transparent: true, opacity: 0.07, envMapIntensity: 1.2 }));
+refl.position.z = front + 0.03; phone.add(refl);
+
+// side buttons
+function button(len, y, side) {
+  const geo = new THREE.CapsuleGeometry(0.55, len, 6, 16); geo.rotateZ(0);
+  const m = new THREE.Mesh(geo, titanium); m.scale.set(1, 1, 1.9);
+  m.position.set(side * (W / 2 + 0.25), y, 0); phone.add(m);
+}
+button(5.5, 46, -1);   // action
+button(10, 32, -1);    // volume up
+button(10, 18, -1);    // volume down
+button(16, 30, 1);     // side
+
+// ---- camera & pose ----
+const camera = new THREE.PerspectiveCamera(+(P.get('fov')||24), 1920 / 1080, 1, 2000);
+camera.position.set(+(P.get('cx')||-38), +(P.get('cy')||-70), +(P.get('cz')||230));
+camera.lookAt(+(P.get('lx')||6), +(P.get('ly')||28), 0);
+phone.rotation.set(+(P.get('rx')||-0.18), +(P.get('ry')||0.42), +(P.get('rz')||-0.26));
+renderer.render(scene, camera);
+document.body.dataset.ready = 1;
+</script>
+</body></html>
