@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1036px; height: 786px; }
+body { overflow: hidden; position: relative;
+  background:
+    radial-gradient(ellipse 360px 300px at 470px 560px, rgba(203,236,121,.20), rgba(203,236,121,0) 70%),
+    radial-gradient(ellipse 300px 260px at 860px 620px, rgba(203,236,121,.10), rgba(203,236,121,0) 70%),
+    linear-gradient(160deg, #151618 0%, #0c0d0e 40%, #070807 100%); }
+.ph { position: absolute; width: 370px; height: 755px; transform-origin: 0 0; transform: rotate(-17.8deg);
+  border-radius: 58px; padding: 10px;
+  background: linear-gradient(150deg, #2a2c2f, #141517 45%, #1d1e21);
+  box-shadow: inset 0 0 0 1.2px rgba(255,255,255,.16), inset 0 0 0 4px #0b0c0d, 0 40px 80px -30px rgba(0,0,0,.9); }
+.ph .s { width: 100%; height: 100%; border-radius: 49px; overflow: hidden; background: #f4f4f1; position: relative; }
+.ph img { width: 100%; display: block; }
+.ph .isl { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 104px; height: 31px; border-radius: 14px; background: #000; }
+.ph .glass { position: absolute; inset: 0; border-radius: 49px; background: linear-gradient(115deg, rgba(255,255,255,.10), rgba(255,255,255,0) 35%); pointer-events: none; }
+.ref { position: absolute; inset: 0; opacity: 0; }
+</style></head><body>
+<div class="ph" style="left:-121.6px;top:389.7px"><div class="s"><img src="img/collabro/event.jpg"><span class="isl"></span><span class="glass"></span></div></div>
+<div class="ph" style="left:209.4px;top:119px"><div class="s"><img src="img/collabro/participants.jpg"><span class="isl"></span><span class="glass"></span></div></div>
+<div class="ph" style="left:640.1px;top:174.3px"><div class="s"><img src="img/collabro/bubble.jpg"><span class="isl"></span><span class="glass"></span></div></div>
+<script>if(location.search.includes('ref'))document.getElementById('ref').style.opacity=.5;
+Promise.all([...document.images].map(i=>i.complete?0:new Promise(r=>i.onload=i.onerror=r))).then(()=>document.body.dataset.ready=1)</script>
+</body></html>
