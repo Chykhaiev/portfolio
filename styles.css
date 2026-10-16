@@ -508,6 +508,20 @@ a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: 
 .lb-close { position: fixed; top: 16px; right: 16px; z-index: 1; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--edge-2); background: rgba(40,40,44,.8); color: var(--fg); font-size: 24px; line-height: 1; cursor: pointer; }
 .lb-lock, .lb-lock body { overflow: hidden; }
 
+/* before → after metrics, goals */
+.ba { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.ba div { padding: 14px 16px; border: 1px solid var(--edge); border-radius: 14px; background: var(--surface); }
+.ba span { display: block; font-size: 12.5px; color: var(--faint); margin-bottom: 8px; }
+.ba b { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 0; font-weight: 300; font-size: 26px; line-height: 1.15; letter-spacing: -.02em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.ba s { font-size: 16px; color: var(--faint); text-decoration-thickness: 1px; }
+.ba i { font-style: normal; font-size: 16px; color: rgba(var(--blue), .9); margin: 0 8px; }
+.goals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.goals div { padding: 18px 20px; border: 1px solid var(--edge); border-radius: 16px; background: var(--surface); }
+.goals span { font-size: 12.5px; color: rgba(var(--blue), .95); }
+.goals h3 { margin: 8px 0 6px; font-size: 17px; font-weight: 500; }
+.goals p { margin: 0; color: var(--muted); font-size: 15px; }
+@media (max-width: 760px) { .goals { grid-template-columns: 1fr; } }
+
 /* ============ Reveal ============ */
 .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
 .js .reveal.in { opacity: 1; transform: none; }

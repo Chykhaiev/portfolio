@@ -42,6 +42,13 @@
         <div><dt>Timeline</dt><dd>About 4 years, MVP launched in 2026</dd></div>
         <div><dt>Scope</dt><dd>Host web app, guest mobile web app, design system (50+ components)</dd></div>
       </dl>
+      <div class="stats-row" aria-label="In numbers">
+        <div><b>~4 yrs</b><span>as the only designer</span></div>
+        <div><b>2</b><span>apps: host web, guest mobile</span></div>
+        <div><b>5</b><span>key flows re-created</span></div>
+        <div><b>18</b><span>screens in this case</span></div>
+        <div><b>50+</b><span>components in the system</span></div>
+      </div>
       <aside class="nda">
         <span class="nda-tag">NDA</span>
         <p>The real screens and product data are under NDA, so I can’t publish them. Everything below is re-created for this portfolio: the same flows and decisions, rebuilt in a new visual style with made-up content. Where a re-created screen differs from what shipped, I say so.</p>
@@ -98,6 +105,12 @@
             <li><b>Guests</b> need check-in to feel quick and safe. The shipped flow had 6 steps, a marketing survey in the middle and prices that changed between steps.</li>
           </ul>
           <p>The visual language had also drifted over four years: three different navigation menus, 5+ accent colours with no clear role and four icon styles. That made the product feel less trustworthy, which matters for a service that asks guests to pay outside Airbnb.</p>
+          <h3 class="sub">Design goals</h3>
+          <div class="goals">
+            <div><span>Goal 1 · Hosts</span><h3>Setup that scales</h3><p>A manager with 80+ listings imports them in one pass and enters shared settings once, not per listing.</p></div>
+            <div><span>Goal 2 · Guests</span><h3>Check-in that feels quick and safe</h3><p>Fewer steps, nothing that isn’t about the stay, and one price from the first step to payment.</p></div>
+            <div><span>Goal 3 · Both</span><h3>One visual language</h3><p>One navigation, one action colour, one icon style and WCAG AA contrast for text.</p></div>
+          </div>
         </section>
 
         <!-- 03 -->
@@ -132,6 +145,12 @@
           <figure class="solo">
             <div class="shot"><img src="../../img/staydirect/style-tile.jpg" alt="Style tile: a dark hero card with blue glow, an ember gradient card, a white stats card and button styles" loading="lazy" width="1800" height="492" /></div>
           </figure>
+          <div class="ba" aria-label="v1 to v2 in numbers">
+            <div><span>Navigation menus</span><b><s>3</s><i>→</i>1</b></div>
+            <div><span>Action colours</span><b><s>5+</s><i>→</i>1</b></div>
+            <div><span>Icon styles</span><b><s>4</s><i>→</i>1</b></div>
+            <div><span>Weakest text contrast</span><b><s>2.5:1</s><i>→</i>4.8:1</b></div>
+          </div>
           <div class="table-wrap">
             <table class="map vs">
               <thead><tr><th></th><th>v1</th><th>v2 “Noir Ember”</th></tr></thead>
@@ -159,6 +178,11 @@
               <div class="shot"><img src="../../img/staydirect/onb-1-source.jpg" alt="Step 1: choose Airbnb or Guesty as large option cards" loading="lazy" width="1440" height="960" /></div>
               <div class="shot"><img src="../../img/staydirect/onb-3-import.jpg" alt="Step 3: all 86 units selected by default, with search, filters and statuses" loading="lazy" width="1440" height="1120" /></div>
             </figure>
+            <div class="ba" aria-label="Shipped flow vs re-created flow">
+              <div><span>Screens to finish</span><b><s>7</s><i>→</i>4</b></div>
+              <div><span>Import sources</span><b><s>1</s><i>→</i>2</b></div>
+              <div><span>Settings forms for 86 units</span><b><s>86</s><i>→</i>1</b></div>
+            </div>
             <ul class="ticks">
               <li><b>Two sources, one choice.</b> Airbnb or Guesty as large option cards; the one for big portfolios carries a “Best for 20+ listings” badge.</li>
               <li><b>Instant feedback.</b> Pasting a profile link shows the found host and “24 listings” before the user presses anything.</li>
@@ -176,6 +200,12 @@
               <div class="phone-shot"><img src="../../img/staydirect/ci-3-protection.jpg" alt="Protection: damage waiver or deposit as two cards, total shown" loading="lazy" width="393" height="1355" /></div>
               <div class="phone-shot"><img src="../../img/staydirect/ci-5-done.jpg" alt="Done: door code unlocked with Wi-Fi and directions" loading="lazy" width="393" height="990" /></div>
             </figure>
+            <div class="ba" aria-label="Shipped flow vs re-created flow">
+              <div><span>Steps</span><b><s>6</s><i>→</i>4</b></div>
+              <div><span>Steps not about the stay</span><b><s>1</s><i>→</i>0</b></div>
+              <div><span>Price changes before payment</span><b><s>Yes</s><i>→</i>No</b></div>
+              <div><span>Progress bar matches the step</span><b><s>No</s><i>→</i>Yes</b></div>
+            </div>
             <ul class="ticks">
               <li><b>Removed the survey step</b> and prefilled details from the Airbnb booking.</li>
               <li><b>Clear money.</b> Damage waiver ($49, one-time) or deposit ($500 hold, not charged) as two cards; the total updates live and is repeated next to the button.</li>
@@ -248,19 +278,34 @@
         <section id="outcome" class="cs">
           <p class="cs-n">07</p>
           <h2>Outcome &amp; learnings</h2>
-          <p>I don’t have product metrics I can share, and the re-created flows were not tested in this form, so I don’t claim numbers. What the work produced:</p>
+          <h3 class="sub">What I achieved</h3>
           <ul class="ticks">
-            <li><b>A design system the product can grow on:</b> 50+ documented components, scoped tokens with CSS names, accessible contrast by default.</li>
-            <li><b>Five flows built around the real customer,</b> a host with dozens of units, instead of a single-listing host.</li>
+            <li><b>Took the product from first screens to an MVP launch in 2026</b> as the only designer, across a host web app and a guest mobile web app.</li>
+            <li><b>Built the design system (v1)</b> the product was designed on, then rebuilt it as v2: 50+ documented components, scoped tokens with CSS names, AA contrast by default.</li>
+            <li><b>Five flows re-designed around the real customer,</b> a host with dozens of units: onboarding from 7 screens to 4 steps, guest check-in from 6 steps to 4.</li>
             <li><b>A clear product loop</b> on one board: guidebook → guest emails → campaign → direct booking.</li>
           </ul>
+          <h3 class="sub">How I would measure success</h3>
+          <p>Product data is under NDA and the re-created flows were not tested in this form, so these are the targets I would set, not results.</p>
+          <div class="table-wrap">
+            <table class="map">
+              <thead><tr><th>Metric</th><th>Why it matters</th><th>Target</th></tr></thead>
+              <tbody>
+                <tr><td>Check-in completed before arrival</td><td>The guest’s first task; it unlocks the door code</td><td>85%+ of guests</td></tr>
+                <tr><td>Time to finish check-in</td><td>Shows if 4 steps really feel quick</td><td>Under 3 minutes</td></tr>
+                <tr><td>Time to import and set up 20+ listings</td><td>Setup that scales for Lisa</td><td>Under 10 minutes</td></tr>
+                <tr><td>Guests who leave an email in the guidebook</td><td>Fuels every campaign</td><td>Baseline first, then grow</td></tr>
+                <tr><td>Direct bookings from past guests</td><td>The reason the product exists</td><td>Baseline first, then grow</td></tr>
+              </tbody>
+            </table>
+          </div>
           <div class="learn">
             <div><h3>No research is not a reason to skip it</h3><p>Proto-personas, CJMs and an audit made every decision traceable, even as hypotheses.</p></div>
             <div><h3>A system grows best next to real screens</h3><p>Each flow added components; each component made the next flow faster.</p></div>
             <div><h3>Trust is a UI problem too</h3><p>Clear money, one visual language and honest copy matter most where a guest pays outside Airbnb.</p></div>
             <div><h3>Being the only designer</h3><p>Four years alone on a product taught me to document decisions, because nobody else would remember why a screen looks the way it does.</p></div>
           </div>
-          <p><b>What I would test next:</b> the check-in flow with 5 guests (time to finish, drop-off per step) and the import step with 3 property managers.</p>
+          <p><b>What I would test first:</b> the check-in flow with 5 guests (time to finish, drop-off per step) and the import step with 3 property managers, to see if the targets above are realistic.</p>
         </section>
       </article>
     </div>
