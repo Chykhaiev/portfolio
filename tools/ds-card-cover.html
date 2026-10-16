@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Geist; src: url("/fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1920px; height: 1080px; }
+body { font-family: Geist, sans-serif; color: #fff; overflow: hidden; -webkit-font-smoothing: antialiased; position: relative;
+  background: radial-gradient(ellipse 760px 380px at 1250px 640px, rgba(43,89,255,.55), rgba(30,70,224,.18) 45%, rgba(11,11,13,0) 75%), #0b0b0d; }
+.txt { position: absolute; left: 120px; bottom: 120px; width: 620px; }
+.eyebrow { font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: #b9bcc4; display: flex; align-items: center; gap: 12px; }
+.eyebrow::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #ff6b2c; }
+h1 { font-weight: 300; font-size: 128px; letter-spacing: -.045em; line-height: 1; margin-top: 30px; }
+h2 { font-weight: 300; font-size: 44px; letter-spacing: -.02em; color: #b9bcc4; margin-top: 18px; line-height: 1.15; }
+.meta { display: flex; gap: 56px; margin-top: 60px; }
+.meta dt { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: #8c9099; }
+.meta dd { font-size: 22px; margin-top: 8px; margin-left: 0; }
+
+.board { position: absolute; left: 860px; top: 145px; width: 960px; display: grid; grid-template-columns: 300px 300px 1fr; grid-template-rows: 290px 230px 250px; gap: 20px; }
+.t { border-radius: 28px; padding: 26px 28px; position: relative; overflow: hidden; }
+.dark { background: #15161a; box-shadow: inset 0 0 0 1px #25272b; }
+.light { background: #fff; color: #151619; }
+.lab { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #8c9099; }
+.light .lab { color: #6e727b; }
+
+.type { grid-row: span 2; display: flex; flex-direction: column; justify-content: space-between; }
+.type .aa { font-size: 230px; font-weight: 300; letter-spacing: -.06em; line-height: .85; margin-top: 24px; }
+.type .w { display: flex; flex-direction: column; gap: 8px; font-size: 20px; }
+.type .w span:nth-child(1) { font-weight: 300; } .type .w span:nth-child(2) { font-weight: 400; color: #d7d9df; } .type .w span:nth-child(3) { font-weight: 500; color: #b9bcc4; }
+
+.color { grid-column: span 2; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); }
+.color div { display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 16px; font-size: 14px; white-space: nowrap; }
+.color b { font-weight: 500; display: block; } .color span { opacity: .7; font-size: 13px; margin-top: 4px; display: block; }
+
+.btns { display: flex; flex-direction: column; gap: 12px; } .btns .lab { margin-bottom: 4px; }
+.btn { height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 500; }
+.bp { background: #ff6b2c; color: #0b0b0d; } .bi { background: #0b0b0d; color: #fff; } .bo { box-shadow: inset 0 0 0 1px #b9bcc4; color: #151619; }
+
+.stats { display: flex; flex-direction: column; justify-content: space-between; }
+.stats .n { font-size: 64px; font-weight: 300; letter-spacing: -.04em; line-height: 1; }
+.stats .n small { font-size: 20px; letter-spacing: 0; color: #b9bcc4; margin-left: 8px; }
+
+.scale { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.sp { display: flex; flex-direction: column; gap: 12px; margin-top: 22px; }
+.sp div { display: flex; align-items: center; gap: 14px; font-size: 14px; color: #b9bcc4; }
+.sp i { height: 14px; border-radius: 3px; background: #ff6b2c; display: block; }
+.sp em { font-style: normal; width: 26px; text-align: right; }
+.rad { display: flex; gap: 14px; align-items: flex-end; margin-top: 26px; }
+.rad div { display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 14px; color: #b9bcc4; }
+.rad i { width: 72px; height: 72px; border: 2px solid #8fa8ff; border-right: 0; border-bottom: 0; display: block; }
+.icons { display: flex; flex-direction: column; justify-content: space-between; }
+.icons .g { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; color: #fff; margin-top: 20px; }
+</style></head>
+<body>
+<div class="txt">
+  <p class="eyebrow">Design system · 2026</p>
+  <h1>StayDirect</h1>
+  <h2>Tokens, components and docs, rebuilt next to the product</h2>
+  <dl class="meta"><div><dt>Variables</dt><dd>154</dd></div><div><dt>Components</dt><dd>50</dd></div><div><dt>Variants</dt><dd>410</dd></div></dl>
+</div>
+<div class="board">
+  <div class="t dark type"><span class="lab">Type · Geist</span><div class="aa">Aa</div><div class="w"><span>Light 300 · numbers</span><span>Regular 400 · body</span><span>Medium 500 · UI</span></div></div>
+  <div class="t color">
+    <div style="background:#fff0e8;color:#151619"><b>ember-50</b><span>tint-action</span></div>
+    <div style="background:#ff6b2c;color:#0b0b0d"><b>ember-500</b><span>fill-action</span></div>
+    <div style="background:#c2410c"><b>ember-700</b><span>text-action</span></div>
+    <div style="background:#2b59ff"><b>blue-500</b><span>highlight</span></div>
+    <div style="background:#25272b"><b>gray-800</b><span>raised</span></div>
+    <div style="background:#f1f2f4;color:#151619"><b>gray-50</b><span>page</span></div>
+  </div>
+  <div class="t light btns"><span class="lab">Button · M</span><div class="btn bp">Book direct</div><div class="btn bi">Preview</div><div class="btn bo">Cancel</div></div>
+  <div class="t dark icons"><span class="lab">Icons · 104</span>
+    <div class="g">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M2 9a14 14 0 0 1 20 0"/><circle cx="12" cy="19.5" r=".8" fill="currentColor"/></svg>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/></svg>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0"/></svg>
+    </div>
+  </div>
+  <div class="t dark scale">
+    <div><span class="lab">Spacing</span><div class="sp">
+      <div><em>4</em><i style="width:12px"></i></div><div><em>8</em><i style="width:24px"></i></div><div><em>16</em><i style="width:48px"></i></div><div><em>24</em><i style="width:72px"></i></div><div><em>32</em><i style="width:96px"></i></div><div><em>48</em><i style="width:144px"></i></div>
+    </div></div>
+    <div><span class="lab">Radius</span><div class="rad">
+      <div><i style="border-top-left-radius:4px"></i>4</div><div><i style="border-top-left-radius:12px"></i>12</div><div><i style="border-top-left-radius:20px"></i>20</div><div><i style="border-top-left-radius:28px"></i>28</div>
+    </div></div>
+  </div>
+  <div class="t light stats"><span class="lab">Audit</span><div><div class="n">96%</div><div style="font-size:16px;color:#575a61;margin-top:10px;line-height:1.35">of colours bound to tokens</div></div></div>
+</div>
+<script>document.fonts.ready.then(()=>document.body.dataset.ready=1)</script>
+</body></html>
