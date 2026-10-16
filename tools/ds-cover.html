@@ -1,0 +1,132 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Geist; src: url("/fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1920px; height: 1080px; }
+body { background: #f1f2f4; font-family: Geist, sans-serif; color: #151619; position: relative; overflow: hidden; -webkit-font-smoothing: antialiased; }
+.sheet { position: absolute; inset: 72px 88px; }
+.top { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 22px; border-bottom: 1px solid #d7d9df; }
+.top h1 { font-weight: 400; font-size: 40px; letter-spacing: -.02em; }
+.top h1 span { color: #8c9099; }
+.top p { font-size: 18px; color: #6e727b; }
+.cols { position: absolute; top: 104px; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 360px 430px 1fr; column-gap: 128px; }
+.colh { display: flex; justify-content: space-between; font-size: 16px; color: #6e727b; padding: 32px 0 22px; letter-spacing: .01em; }
+.colh b { font-weight: 500; color: #151619; }
+.list { display: flex; flex-direction: column; gap: 16px; }
+.sw { display: flex; align-items: center; gap: 16px; height: 84px; padding: 0 20px 0 14px; background: #fff; border-radius: 12px; border: 1px solid #e8e9ed; }
+.sw i { width: 52px; height: 52px; border-radius: 12px; flex: none; box-shadow: inset 0 0 0 1px rgba(11,11,13,.08); }
+.sw .n { font-size: 19px; }
+.sw .h { margin-left: auto; font-size: 15px; color: #8c9099; font-variant-numeric: tabular-nums; }
+.tk { display: flex; align-items: center; gap: 14px; height: 84px; padding: 0 22px; background: #fff; border-radius: 12px; border: 1px solid #e8e9ed; font-size: 19px; }
+.tk i { width: 18px; height: 18px; border-radius: 4px; flex: none; box-shadow: inset 0 0 0 1px rgba(11,11,13,.1); }
+.tk .s { margin-left: auto; font-size: 15px; color: #8c9099; }
+.on { border-color: #ff6b2c; box-shadow: 0 0 0 3px #fff0e8; }
+.comps { display: flex; flex-direction: column; justify-content: space-between; height: 684px; }
+.row { display: flex; gap: 14px; align-items: center; }
+.btn { white-space: nowrap; height: 52px; padding: 0 24px; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 500; }
+.b-p { background: #ff6b2c; color: #0b0b0d; }
+.b-h { background: #e8571c; color: #0b0b0d; }
+.b-pr { background: #c2410c; color: #0b0b0d; }
+.b-f { background: #ff6b2c; color: #0b0b0d; box-shadow: 0 0 0 2px #f1f2f4, 0 0 0 4px #ff6b2c; }
+.b-i { background: #0b0b0d; color: #fff; }
+.b-o { background: #fff; color: #151619; box-shadow: inset 0 0 0 1px #b9bcc4; }
+.cap { font-size: 14px; color: #8c9099; margin-top: 8px; }
+.st { display: flex; flex-direction: column; align-items: flex-start; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+.card { background: #fff; border-radius: 20px; padding: 24px 26px; border: 1px solid #e8e9ed; }
+.lab { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #6e727b; }
+.kpi .v { font-size: 48px; font-weight: 300; letter-spacing: -.03em; margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+.chip { font-size: 14px; font-weight: 500; padding: 4px 9px; border-radius: 999px; letter-spacing: 0; }
+.g { background: #e5f6ec; color: #157a41; }
+.bl { background: #eef2ff; color: #1e46e0; }
+.opt { display: flex; gap: 16px; align-items: flex-start; border: 1.5px solid #ff6b2c; background: #fff; }
+.ic { width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; flex: none; background: #fff0e8; color: #c2410c; }
+.opt h3 { font-size: 20px; font-weight: 500; }
+.opt p { font-size: 16px; color: #575a61; margin-top: 4px; line-height: 1.4; }
+.radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ff6b2c; display: grid; place-items: center; margin-left: auto; flex: none; }
+.radio::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #ff6b2c; }
+.code { display: flex; align-items: center; justify-content: space-between; border: 1.5px dashed #b9bcc4; border-radius: 16px; padding: 20px 24px; background: #fff; }
+.code b { display: block; font-weight: 500; font-size: 22px; letter-spacing: .02em; margin-top: 4px; }
+.ctl { display: flex; gap: 28px; align-items: center; font-size: 17px; }
+.tg { width: 44px; height: 26px; border-radius: 999px; background: #ff6b2c; position: relative; }
+.tg::after { content: ""; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+.cb { width: 22px; height: 22px; border-radius: 6px; background: #ff6b2c; display: grid; place-items: center; }
+.cbo { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #b9bcc4; background: #fff; }
+.lbl { display: inline-flex; align-items: center; gap: 10px; }
+svg.wires { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+.foot { position: absolute; left: 72px; right: 72px; bottom: 40px; display: flex; justify-content: space-between; font-size: 13px; color: #8c9099; }
+</style></head>
+<body>
+<svg class="wires" id="w"></svg>
+<div class="sheet">
+  <div class="top"><h1>StayDirect Design System <span>· v2</span></h1><p>One value, traced from primitive to component</p></div>
+  <div class="cols">
+    <div>
+      <div class="colh"><b>Primitives</b><span>51</span></div>
+      <div class="list">
+        <div class="sw on" id="p-e500"><i style="background:#ff6b2c"></i><span class="n">ember-500</span><span class="h">#FF6B2C</span></div>
+        <div class="sw" id="p-e600"><i style="background:#e8571c"></i><span class="n">ember-600</span><span class="h">#E8571C</span></div>
+        <div class="sw" id="p-g950"><i style="background:#0b0b0d"></i><span class="n">gray-950</span><span class="h">#0B0B0D</span></div>
+        <div class="sw" id="p-e50"><i style="background:#fff0e8"></i><span class="n">ember-50</span><span class="h">#FFF0E8</span></div>
+        <div class="sw" id="p-b500"><i style="background:#2b59ff"></i><span class="n">blue-500</span><span class="h">#2B59FF</span></div>
+        <div class="sw" id="p-e700"><i style="background:#c2410c"></i><span class="n">ember-700</span><span class="h">#C2410C</span></div>
+        <div class="sw" id="p-gr500"><i style="background:#23a55a"></i><span class="n">green-500</span><span class="h">#23A55A</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="colh"><b>Semantic tokens</b><span>103</span></div>
+      <div class="list">
+        <div class="tk on" id="t-fill"><i style="background:#ff6b2c"></i>fill-action<span class="s">--fill-action</span></div>
+        <div class="tk" id="t-hover"><i style="background:#e8571c"></i>fill-action-hover<span class="s">--fill-action-hover</span></div>
+        <div class="tk" id="t-on"><i style="background:#0b0b0d"></i>text-on-action<span class="s">--text-on-action</span></div>
+        <div class="tk" id="t-tint"><i style="background:#fff0e8"></i>tint-action<span class="s">--tint-action</span></div>
+        <div class="tk" id="t-hl"><i style="background:#2b59ff"></i>fill-highlight<span class="s">--fill-highlight</span></div>
+        <div class="tk" id="t-text"><i style="background:#c2410c"></i>text-action<span class="s">--text-action</span></div>
+        <div class="tk" id="t-ok"><i style="background:#23a55a"></i>fill-success<span class="s">--fill-success</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="colh"><b>Components</b><span>50</span></div>
+      <div class="comps">
+        <div class="row" id="c-row">
+          <div class="st"><span class="btn b-p" id="c-btn">Book now</span><span class="cap">Default</span></div>
+          <div class="st"><span class="btn b-h" id="c-hov">Book now</span><span class="cap">Hover</span></div>
+          <div class="st"><span class="btn b-f">Book now</span><span class="cap">Focused</span></div>
+          <div class="st"><span class="btn b-pr">Book now</span><span class="cap">Pressed</span></div>
+          <div class="st"><span class="btn b-i">Preview</span><span class="cap">Inverse</span></div>
+        </div>
+        <div class="card opt" id="c-opt">
+          <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></div>
+          <div><h3>Guesty <span class="chip bl" id="c-badge">Best for 20+ listings</span></h3><p>Import every unit at once, with Wi-Fi and check-in details.</p></div>
+          <span class="radio"></span>
+        </div>
+        <div class="code" id="c-code"><div><span class="lab">Your code</span><b>WELCOMEBACK10</b></div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg></div>
+        <div class="grid2"><div class="card kpi" id="c-kpi"><span class="lab">Open rate</span><div class="v">41.2% <span class="chip g" id="c-ok">+3.1 pts</span></div></div>
+          <div class="ctl" style="flex-direction:column;align-items:flex-start;gap:18px">
+          <span class="lbl"><span class="tg"></span>Auto-sync</span>
+          <span class="lbl"><span class="cb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0b0b0d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Wi-Fi for all listings</span>
+          <span class="lbl"><span class="cbo"></span>Late check-out</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const W=document.getElementById('w'), NS='http://www.w3.org/2000/svg';
+const r=id=>document.getElementById(id).getBoundingClientRect();
+function wire(a,b,hot,toLeftEdge=true){
+  const A=r(a),B=r(b); const x1=A.right, y1=A.top+A.height/2, x2=B.left, y2=B.top+Math.min(B.height/2,42);
+  const mx=(x1+x2)/2; const p=document.createElementNS(NS,'path');
+  p.setAttribute('d',`M${x1} ${y1} C${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`);
+  p.setAttribute('fill','none'); p.setAttribute('stroke',hot?'#ff6b2c':'#b9bcc4'); p.setAttribute('stroke-width',hot?2:1.25);
+  W.appendChild(p);
+  for(const [x,y] of [[x1,y1],[x2,y2]]){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',hot?4:3);c.setAttribute('fill',hot?'#ff6b2c':'#b9bcc4');W.appendChild(c);}
+}
+document.fonts.ready.then(()=>{
+  wire('p-e500','t-fill',true); wire('p-e600','t-hover'); wire('p-g950','t-on'); wire('p-e50','t-tint'); wire('p-b500','t-hl'); wire('p-e700','t-text'); wire('p-gr500','t-ok');
+  wire('t-fill','c-row',true); wire('t-hover','c-row'); wire('t-on','c-row'); wire('t-tint','c-opt'); wire('t-hl','c-opt'); wire('t-text','c-code'); wire('t-ok','c-kpi');
+  document.body.dataset.ready=1;
+});
+</script>
+</body></html>
