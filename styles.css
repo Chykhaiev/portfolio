@@ -574,4 +574,6 @@ a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: 
 /* closing window gets the strongest glow on the page */
 .win-contact { border-color: rgba(var(--blue), .24); box-shadow: inset 0 1px 0 rgba(var(--blue), .3), 0 0 120px -30px rgba(var(--blue), .35); }
 
-.phones-2 figcaption { grid-column: 1 / -1; text-align: center; }
+.phones-2 figcaption, .phones-trio figcaption { grid-column: 1 / -1; text-align: center; }
+.phones-trio { grid-template-columns: repeat(3, minmax(0, 260px)); justify-content: center; gap: 24px; }
+@media (max-width: 640px) { .phones-trio { gap: 10px; } }
