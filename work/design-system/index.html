@@ -6,23 +6,23 @@
   <title>StayDirect Design System — Case study — Oleksandr Chykhaiev</title>
   <meta name="description" content="Rebuilding a design system next to the product: tokens, 50 components with docs, and the checks that keep them honest." />
   <meta name="theme-color" content="#0f0f10" />
-  <link rel="preload" href="../../fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body class="case-page">
   <a class="skip" href="#content">Skip to content</a>
 
   <header class="top">
-    <a class="brand" href="../../" aria-label="Home">
+    <a class="brand" href="/" aria-label="Home">
       <span class="brand-name">Oleksandr Chykhaiev</span>
       <span class="brand-role">UI/UX &amp; AI Designer</span>
     </a>
     <nav class="pill" aria-label="Sections">
       <span class="pill-glow" aria-hidden="true"></span>
-      <a href="../../#work" class="is-active">Work</a>
-      <a href="../../#about">About</a>
-      <a href="../../#experience">Experience</a>
-      <a href="../../#contact">Contact</a>
+      <a href="/#work" class="is-active">Work</a>
+      <a href="/#about">About</a>
+      <a href="/#experience">Experience</a>
+      <a href="/#contact">Contact</a>
     </nav>
     <div class="top-links">
       <a href="#" data-todo="linkedin" target="_blank" rel="noopener">LinkedIn <span class="ne" aria-hidden="true">↗</span></a>
@@ -32,7 +32,7 @@
 
   <main id="content">
     <section class="wrap case-hero">
-      <a class="back" href="../../#work"><span aria-hidden="true">←</span> All work</a>
+      <a class="back" href="/#work"><span aria-hidden="true">←</span> All work</a>
       <p class="eyebrow">Case study · Design system, 2026</p>
       <h1 class="case-title">StayDirect Design System</h1>
       <p class="case-lead">Rebuilding a design system <em>next to</em> the product: tokens, 50 components with docs, and the checks that keep them honest.</p>
@@ -52,7 +52,7 @@
     </section>
 
     <figure class="wrap case-cover reveal">
-      <div class="cover-stage"><img src="../../img/ds/cover-v2.jpg" alt="One value traced through the system: ember-500 primitive to the fill-action token to the Button, with other primitives, semantic tokens and components" width="2880" height="1620" /></div>
+      <div class="cover-stage"><img src="/img/ds/cover-v2.jpg" alt="One value traced through the system: ember-500 primitive to the fill-action token to the Button, with other primitives, semantic tokens and components" width="2880" height="1620" /></div>
     </figure>
 
     <div class="wrap case-layout">
@@ -73,14 +73,14 @@
           <p class="cs-n">01</p>
           <h2>Context &amp; my role</h2>
           <p>StayDirect is a web platform that helps short-term rental hosts turn past Airbnb guests into direct bookings: a desktop app for hosts and a mobile web app for guests. I was the only designer on it for about four years and built its first design system (v1).</p>
-          <p>The product screens are under NDA, so for my portfolio I re-created five key flows in a new visual style (see the <a class="inline" href="../staydirect/">StayDirect case</a>). Before rebuilding any screen, I rebuilt the design system as v2 and grew it together with the screens. This case is about that system.</p>
+          <p>The product screens are under NDA, so for my portfolio I re-created five key flows in a new visual style (see the <a class="inline" href="/work/staydirect/">StayDirect case</a>). Before rebuilding any screen, I rebuilt the design system as v2 and grew it together with the screens. This case is about that system.</p>
         </section>
 
         <section id="problem" class="cs">
           <p class="cs-n">02</p>
           <h2>Problem</h2>
           <p>v1 had the right structure, with primitive and semantic tokens and documented components, but loose rules. A system with loose rules looks consistent in the library and drifts in the product.</p>
-          <figure class="solo"><div class="shot"><img src="../../img/ds/starting-point.jpg" alt="Audit of v1: no scopes, 2.5:1 placeholder contrast, 0 of 100 spacing values bound, 140 variants in one Button, and the v2 fix for each" loading="lazy" width="1740" height="450" /></div></figure>
+          <figure class="solo"><div class="shot"><img src="/img/ds/starting-point.jpg" alt="Audit of v1: no scopes, 2.5:1 placeholder contrast, 0 of 100 spacing values bound, 140 variants in one Button, and the v2 fix for each" loading="lazy" width="1740" height="450" /></div></figure>
           <p>For a product that asks guests to pay outside Airbnb, visual inconsistency is not cosmetic: it lowers trust at the moment of payment.</p>
         </section>
 
@@ -95,7 +95,7 @@
             <li><h3>Grow with the flows</h3><p>The library was not finished before the screens. Each flow added what it needed and documented it before its screens were rebuilt on it (v2.0 → v2.5).</p></li>
             <li><h3>Audit again</h3><p>A scripted quality pass on the whole library (v2.6, below).</p></li>
           </ol>
-          <figure class="solo"><div class="shot"><img src="../../img/ds/foundations.jpg" alt="Foundations: 51 primitives to 103 semantic tokens to 50 components, one value traced end to end, type, radius and spacing scales" loading="lazy" width="1740" height="810" /></div></figure>
+          <figure class="solo"><div class="shot"><img src="/img/ds/foundations.jpg" alt="Foundations: 51 primitives to 103 semantic tokens to 50 components, one value traced end to end, type, radius and spacing scales" loading="lazy" width="1740" height="810" /></div></figure>
         </section>
 
         <section id="decisions" class="cs">
@@ -104,7 +104,7 @@
 
           <div class="decision">
             <h3><span>1</span> Ember is the only action colour, with dark text</h3>
-            <figure class="solo"><div class="shot"><img src="../../img/ds/color-decisions.jpg" alt="White text on ember fails contrast at 2.84:1; near-black passes at 6.92:1. Blue is used only for highlights" loading="lazy" width="1740" height="370" /></div></figure>
+            <figure class="solo"><div class="shot"><img src="/img/ds/color-decisions.jpg" alt="White text on ember fails contrast at 2.84:1; near-black passes at 6.92:1. Blue is used only for highlights" loading="lazy" width="1740" height="370" /></div></figure>
             <dl class="dec">
               <div><dt>Decided</dt><dd>Every primary button, link, focus ring and selected tab uses ember #FF6B2C, and labels on ember are near-black.</dd></div>
               <div><dt>Why</dt><dd>White text on ember is 2.84:1 and fails WCAG AA; near-black is 6.92:1. One clickable colour is also one rule users learn once.</dd></div>
@@ -131,20 +131,20 @@
 
           <div class="decision">
             <h3><span>4</span> Separate Button and Icon Button</h3>
-            <figure class="solo"><div class="shot"><img src="../../img/ds/button-matrix-v2.jpg" alt="Button variant matrix: 5 types by 5 states at size M, with its properties and rules" loading="lazy" width="3504" height="1142" /></div></figure>
+            <figure class="solo"><div class="shot"><img src="/img/ds/button-matrix-v2.jpg" alt="Button variant matrix: 5 types by 5 states at size M, with its properties and rules" loading="lazy" width="3504" height="1142" /></div></figure>
             <dl class="dec">
               <div><dt>Decided</dt><dd>Two components with the same three properties (type, size, state) instead of one 140-variant set.</dd></div>
               <div><dt>Why</dt><dd>Fewer properties per set make the right variant easy to find; both stay in sync through shared tokens.</dd></div>
             </dl>
             <details class="more">
               <summary>See the generated documentation page</summary>
-              <div class="shot"><img src="../../img/ds/button-docs.jpg" alt="Button documentation page: usage, properties and variants" loading="lazy" width="1740" height="1260" /></div>
+              <div class="shot"><img src="/img/ds/button-docs.jpg" alt="Button documentation page: usage, properties and variants" loading="lazy" width="1740" height="1260" /></div>
             </details>
           </div>
 
           <div class="decision">
             <h3><span>5</span> Build the library next to the screens</h3>
-            <figure class="solo"><div class="shot"><img src="../../img/ds/growing.jpg" alt="Releases v2.0 to v2.6: each flow added its components; 50 components, 410 variants, 104 icons, 17 documented component pages" loading="lazy" width="1740" height="610" /></div></figure>
+            <figure class="solo"><div class="shot"><img src="/img/ds/growing.jpg" alt="Releases v2.0 to v2.6: each flow added its components; 50 components, 410 variants, 104 icons, 17 documented component pages" loading="lazy" width="1740" height="610" /></div></figure>
             <dl class="dec">
               <div><dt>Decided</dt><dd>Each flow adds its components, documented, before its screens are rebuilt on them.</dd></div>
               <div><dt>Why</dt><dd>Components designed in a vacuum miss real content and real states. Components pulled from real screens get used.</dd></div>
@@ -157,7 +157,7 @@
           <p class="cs-n">05</p>
           <h2>Quality checks</h2>
           <p>I ran scripted audits on every component through the Figma Plugin API, with an AI assistant writing and running the scripts. Each check answers one question: does this component really use the system, or does it only look like it does?</p>
-          <figure class="solo"><div class="shot"><img src="../../img/ds/quality.jpg" alt="Audit results: colours 96%, spacing 98%, text 100%, radius 60% to 93%, and the four bugs the checks caught with their fixes" loading="lazy" width="1740" height="750" /></div></figure>
+          <figure class="solo"><div class="shot"><img src="/img/ds/quality.jpg" alt="Audit results: colours 96%, spacing 98%, text 100%, radius 60% to 93%, and the four bugs the checks caught with their fixes" loading="lazy" width="1740" height="750" /></div></figure>
           <ul class="ticks">
             <li><b>Collapsed auto-layout.</b> Some components collapsed to 10px when resized. They looked fine on the docs page and broke in screens. Fixed with hug sizing and a re-check of every variant.</li>
             <li><b>Icon colours after the icon swap.</b> Replacing the icon library left old colours inside Button and Icon Button. Fixed by binding icon colours to icon tokens per type and state.</li>
@@ -181,7 +181,7 @@
     </div>
 
     <section class="wrap next">
-      <a class="card next-card" href="../diamonds-vpn/">
+      <a class="card next-card" href="/work/diamonds-vpn/">
         <span class="label">Next case</span>
         <span class="next-title">Diamonds VPN <span class="arrow" aria-hidden="true">→</span></span>
         <span class="card-meta">A live 3D website, designed by me and built with AI-assisted code.</span>
@@ -196,6 +196,6 @@
   </footer>
 
   <div class="toast" role="status" aria-live="polite"></div>
-  <script src="../../main.js" defer></script>
+  <script src="/main.js" defer></script>
 </body>
 </html>
