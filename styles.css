@@ -582,3 +582,9 @@ a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: 
 .step-fig figcaption { margin-top: 10px; font-size: 13px; color: var(--faint); max-width: 62ch; }
 .step-fig.tall .shot { max-width: 620px; }
 .step-fig .shot { cursor: zoom-in; }
+
+.tldr { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 4px; }
+.tldr > div { padding: 18px 20px; border-radius: 14px; border: 1px solid var(--edge); background: var(--surface); }
+.tldr .label { margin: 0 0 8px; }
+.tldr p:last-child { margin: 0; font-size: 15px; line-height: 1.5; color: var(--fg); text-wrap: pretty; }
+@media (max-width: 800px) { .tldr { grid-template-columns: 1fr; } }
