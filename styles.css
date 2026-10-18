@@ -577,3 +577,8 @@ a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: 
 .phones-2 figcaption, .phones-trio figcaption { grid-column: 1 / -1; text-align: center; }
 .phones-trio { grid-template-columns: repeat(3, minmax(0, 260px)); justify-content: center; gap: 24px; }
 @media (max-width: 640px) { .phones-trio { gap: 10px; } }
+
+.step-fig { margin: 16px 0 0; }
+.step-fig figcaption { margin-top: 10px; font-size: 13px; color: var(--faint); max-width: 62ch; }
+.step-fig.tall .shot { max-width: 620px; }
+.step-fig .shot { cursor: zoom-in; }
