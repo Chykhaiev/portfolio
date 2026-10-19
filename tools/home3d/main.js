@@ -3,10 +3,10 @@ import "./ui.js";
 // Homepage: a laptop that turns around and opens on scroll, then shows each case on its screen.
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, PlaneGeometry, MeshPhysicalMaterial, MeshBasicMaterial,
-  CanvasTexture, SRGBColorSpace, ACESFilmicToneMapping, PMREMGenerator, DirectionalLight, Raycaster, Vector2, MathUtils,
+  CanvasTexture, SRGBColorSpace, NeutralToneMapping, PMREMGenerator, Raycaster, Vector2, MathUtils,
+  DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
 } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -34,25 +34,33 @@ if (!stage || !webglOK() || reduce) {
 
 function init() {
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.outputColorSpace = SRGBColorSpace;
   const scene = new Scene();
   const camera = new PerspectiveCamera(30, 1, 1, 1000);
   camera.position.set(0, 0, 100);
 
-  // ---------- studio light ----------
+  // ---------- studio light: a real studio HDRI (Poly Haven, CC0), desaturated, 512x256 half floats ----------
   const pmrem = new PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environmentIntensity = 1.0;
-  const key = new DirectionalLight(0xffffff, 1.4); key.position.set(-40, 80, 60); scene.add(key);
+  scene.environmentIntensity = 0.85;
+  scene.environmentRotation.y = 3;
+  fetch('/models/studio-env.bin').then((r) => r.arrayBuffer()).then((buf) => {
+    const h = new Uint16Array(buf), n = h.length, d = new Float32Array(n * 4);
+    for (let i = 0; i < n; i++) { const v = DataUtils.fromHalfFloat(h[i]); d[i * 4] = v; d[i * 4 + 1] = v * 0.995; d[i * 4 + 2] = v * 0.985; d[i * 4 + 3] = 1; }
+    const tx = new DataTexture(d, 512, 256, RGBAFormat, FloatType);
+    tx.mapping = EquirectangularReflectionMapping; tx.colorSpace = LinearSRGBColorSpace; tx.flipY = true;
+    tx.minFilter = LinearFilter; tx.magFilter = LinearFilter; tx.needsUpdate = true;
+    scene.environment = pmrem.fromEquirectangular(tx).texture;
+    tx.dispose(); dirty = true;
+  });
 
   // ---------- MacBook model ----------
   const W = 31.2;                       // layout width in scene units (model is 0.312 m wide)
   const laptop = new Group(); scene.add(laptop);
   const holder = new Group(); laptop.add(holder);
   holder.scale.setScalar(W / 0.312);
-  let lid = null, screen = null;
+  let lid = null, screen = null, glassMesh = null;
   const sc = document.createElement('canvas'); sc.width = 1600; sc.height = 1040;
   const g = sc.getContext('2d');
   const tex = new CanvasTexture(sc); tex.colorSpace = SRGBColorSpace; tex.flipY = false; tex.anisotropy = 8;
@@ -60,7 +68,13 @@ function init() {
     const root = gl.scene;
     holder.add(root); holder.updateMatrixWorld(true);
     screen = root.getObjectByName('tfTbkkzhxqpKRgC');
-    if (screen) screen.material = new MeshBasicMaterial({ map: tex, toneMapped: false });
+    if (screen) {
+      screen.material = new MeshBasicMaterial({ map: tex, toneMapped: false, color: 0xeeeeee });
+      // glass over the display: catches the studio reflections like a real screen
+      const glass = new Mesh(screen.geometry, new MeshPhysicalMaterial({ color: 0x000000, metalness: 0, roughness: 0.06, transparent: true, opacity: 0.1, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
+      glass.position.copy(screen.position); glass.quaternion.copy(screen.quaternion); glass.scale.copy(screen.scale);
+      screen.parent.add(glass); glass.renderOrder = 2; glassMesh = glass;
+    }
     const lidNode = root.getObjectByName('RcexTyyhpuJYATQ');
     if (lidNode) {
       lid = new Group(); lid.position.set(0, 0, -0.108); holder.add(lid); lid.updateMatrixWorld(true);
@@ -154,6 +168,7 @@ function init() {
     const sway = Math.sin(seg(p, C0, C1) * Math.PI * N) * 0.06 * on;
     laptop.rotation.set(lerp(0.7, 0.3, turn), lerp(-Math.PI * 1.15, wide ? -0.22 : 0, turn) + sway, 0);
     lidOpen(lerp(1.92, 0.04, open));
+    if (screen) { const vis = open > 0.03; screen.visible = vis; if (glassMesh) glassMesh.visible = vis; }
     paint(idx, tr, on);
 
     // overlays
