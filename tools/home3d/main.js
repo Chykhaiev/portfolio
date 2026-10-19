@@ -1,11 +1,12 @@
 import "./ui.js";
+// MacBook model: pmndrs/examples (floating-laptop), MIT licence; Draco decoded for a self-contained file.
 // Homepage: a laptop that turns around and opens on scroll, then shows each case on its screen.
 import {
-  WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, Shape, ExtrudeGeometry, ShapeGeometry,
-  BoxGeometry, CylinderGeometry, PlaneGeometry, MeshPhysicalMaterial, MeshStandardMaterial, MeshBasicMaterial,
-  CanvasTexture, SRGBColorSpace, ACESFilmicToneMapping, PMREMGenerator, Color, DoubleSide, BackSide,
-  InstancedMesh, Object3D, HemisphereLight, DirectionalLight, Raycaster, Vector2, MathUtils,
+  WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, PlaneGeometry, MeshPhysicalMaterial, MeshBasicMaterial,
+  CanvasTexture, SRGBColorSpace, ACESFilmicToneMapping, PMREMGenerator, DirectionalLight, Raycaster, Vector2, MathUtils,
 } from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -34,104 +35,47 @@ if (!stage || !webglOK() || reduce) {
 function init() {
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = 0.92;
   renderer.outputColorSpace = SRGBColorSpace;
   const scene = new Scene();
   const camera = new PerspectiveCamera(30, 1, 1, 1000);
   camera.position.set(0, 0, 100);
 
-  // ---------- studio light (soft boxes baked into an environment map) ----------
-  const env = new Scene();
-  env.add(new Mesh(new BoxGeometry(300, 300, 300), new MeshBasicMaterial({ color: 0x141418, side: BackSide })));
-  const box = (w, h, pos, k) => {
-    const m = new Mesh(new PlaneGeometry(w, h), new MeshBasicMaterial({ color: new Color(0xffffff).multiplyScalar(k), side: DoubleSide }));
-    m.position.set(...pos); m.lookAt(0, 0, 0); env.add(m);
-  };
-  box(220, 60, [0, 120, 20], 4.0);    // big top softbox
-  box(50, 200, [-130, 20, 50], 3.2);   // left strip, edge highlight
-  box(50, 200, [130, 20, -10], 2.4);   // right rim
-  box(160, 70, [0, 40, 140], 1.6);     // front fill
-  box(200, 40, [0, -110, 60], 0.5);    // floor bounce
-  box(260, 120, [0, 110, -140], 3.0);  // back-top softbox: lights flat tops seen from the front
-  box(120, 80, [-120, 60, -100], 1.6);
+  // ---------- studio light ----------
   const pmrem = new PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(env, 0.03).texture;
-  scene.add(new HemisphereLight(0xffffff, 0x222226, 0.6));
-  const sun = new DirectionalLight(0xffffff, 1.2); sun.position.set(-30, 60, 50); scene.add(sun);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.75;
+  const key = new DirectionalLight(0xffffff, 1.4); key.position.set(-40, 80, 60); scene.add(key);
 
-  // ---------- laptop (units: cm) ----------
-  const W = 31.2, D = 22, T = 1.45, R = 1.4, LT = 0.55, LH = 21.4;
-  const rr = (w, h, r) => {
-    const s = new Shape(), x = -w / 2, y = -h / 2;
-    s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0);
-    s.lineTo(x + w, y + h - r); s.absarc(x + w - r, y + h - r, r, 0, Math.PI / 2);
-    s.lineTo(x + r, y + h); s.absarc(x + r, y + h - r, r, Math.PI / 2, Math.PI);
-    s.lineTo(x, y + r); s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5);
-    return s;
-  };
-  const alu = new MeshPhysicalMaterial({ color: 0xc9ccd1, metalness: 1, roughness: 0.38, clearcoat: 0.3, clearcoatRoughness: 0.25 });
-  const dark = new MeshStandardMaterial({ color: 0x0b0b0c, roughness: 0.55, metalness: 0.2 });
-  const black = new MeshBasicMaterial({ color: 0x030303 });
-
+  // ---------- MacBook model ----------
+  const W = 31.2;                       // layout width in scene units
   const laptop = new Group(); scene.add(laptop);
-  const body = new Group(); laptop.add(body);
-  body.position.set(0, -T / 2, 0);
-
-  const bev = 0.35;
-  const baseGeo = new ExtrudeGeometry(rr(W - bev * 2, D - bev * 2, R - bev), { depth: T - bev * 2, bevelEnabled: true, bevelThickness: bev, bevelSize: bev, bevelSegments: 6, curveSegments: 32 });
-  baseGeo.rotateX(-Math.PI / 2); baseGeo.translate(0, bev, 0);
-  body.add(new Mesh(baseGeo, alu));
-  const top = T + 0.002;
-
-  // keyboard well + keys
-  const well = new Mesh(new ShapeGeometry(rr(27.6, 11.4, 0.5), 8), dark);
-  well.rotation.x = -Math.PI / 2; well.position.set(0, top, -4.2); body.add(well);
-  const keys = [];
-  const kw = 1.62, gap = 0.3;
-  const rowY = [-8.95, -7.45, -5.8, -4.15, -2.5, -0.85];
-  for (let r = 0; r < 6; r++) {
-    const cols = r === 0 ? 14 : 14;
-    const h = r === 0 ? 0.9 : 1.45;
-    let x = -13.25;
-    for (let c = 0; c < cols; c++) {
-      let w = kw;
-      if (r === 5 && c === 4) w = kw * 5 + gap * 4; // space bar
-      if (r === 5 && c > 4 && c < 9) continue;
-      if (r === 0) w = 1.7;
-      keys.push([x + w / 2, rowY[r] + (r === 0 ? 0.28 : 0), w, h]);
-      x += w + gap;
-    }
-  }
-  const keyGeo = new BoxGeometry(1, 0.16, 1);
-  const keyMesh = new InstancedMesh(keyGeo, new MeshStandardMaterial({ color: 0x1e1e21, roughness: 0.55, metalness: 0.2 }), keys.length);
-  const o = new Object3D();
-  keys.forEach(([x, z, w, h], i) => { o.position.set(x, top + 0.04, z + 0.3); o.scale.set(w, 1, h); o.updateMatrix(); keyMesh.setMatrixAt(i, o.matrix); });
-  body.add(keyMesh);
-  // trackpad
-  const pad = new Mesh(new ShapeGeometry(rr(13.2, 8.2, 0.55), 8), new MeshPhysicalMaterial({ color: 0x7c7e83, metalness: 1, roughness: 0.22 }));
-  pad.rotation.x = -Math.PI / 2; pad.position.set(0, top + 0.001, 6.1); body.add(pad);
-  // hinge
-  const hinge = new Mesh(new CylinderGeometry(0.45, 0.45, W - 6, 24), dark);
-  hinge.rotation.z = Math.PI / 2; hinge.position.set(0, T, -D / 2 + 0.5); body.add(hinge);
-
-  // lid: pivot at hinge, screen faces +z when upright
-  const lid = new Group(); lid.position.set(0, T, -D / 2 + 0.5); body.add(lid);
-  const lidGeo = new ExtrudeGeometry(rr(W - 0.3, LH, R), { depth: LT, bevelEnabled: true, bevelThickness: 0.12, bevelSize: 0.12, bevelSegments: 4, curveSegments: 32 });
-  lidGeo.translate(0, LH / 2, -LT - 0.12);
-  lid.add(new Mesh(lidGeo, alu));
-  const bezel = new Mesh(new ShapeGeometry(rr(W - 0.6, LH - 0.3, R - 0.2), 16), black);
-  bezel.position.set(0, LH / 2, 0.005); lid.add(bezel);
-  const SW = 29.2, SH = SW / 1.6;
-  const sc = document.createElement('canvas'); sc.width = 1600; sc.height = 1000;
+  const holder = new Group(); laptop.add(holder);
+  const k = W / 8.82;                   // model is ~8.82 units wide
+  holder.scale.setScalar(k);
+  holder.position.set(0, 0, -3.4 * k);
+  let lid = null, screen = null, ready = false;
+  const sc = document.createElement('canvas'); sc.width = 1600; sc.height = 1036;
   const g = sc.getContext('2d');
-  const tex = new CanvasTexture(sc); tex.colorSpace = SRGBColorSpace; tex.anisotropy = 8;
-  const screen = new Mesh(new PlaneGeometry(SW, SH), new MeshBasicMaterial({ map: tex, toneMapped: false }));
-  const screenY = LH / 2 + 0.25;
-  screen.position.set(0, screenY, 0.02); lid.add(screen);
-  const glass = new Mesh(new PlaneGeometry(SW, SH), new MeshPhysicalMaterial({ color: 0x000000, roughness: 0.05, metalness: 0, transparent: true, opacity: 0.12 }));
-  glass.position.set(0, screenY, 0.03); lid.add(glass);
-  const cam = new Mesh(new CylinderGeometry(0.12, 0.12, 0.02, 16), new MeshBasicMaterial({ color: 0x1a1d24 }));
-  cam.rotation.x = Math.PI / 2; cam.position.set(0, LH - 0.55, 0.02); lid.add(cam);
+  const tex = new CanvasTexture(sc); tex.colorSpace = SRGBColorSpace; tex.flipY = false; tex.anisotropy = 8;
+  new GLTFLoader().load('/models/macbook.glb', (gl) => {
+    const root = gl.scene;
+    root.traverse((o) => {
+      if (o.name === 'screenflip') lid = o;
+      if (!o.isMesh) return;
+      const m = o.material;
+      if (m.name === 'aluminium') { o.material = new MeshPhysicalMaterial({ color: 0xb9bbbf, metalness: 1, roughness: 0.3, clearcoat: 0.2, clearcoatRoughness: 0.3 }); }
+      if (m.name === 'trackpad') { o.material = new MeshPhysicalMaterial({ color: 0x9ea0a5, metalness: 0.2, roughness: 0.55, side: 2 }); }
+      if (m.name && m.name.startsWith('screen')) { screen = o; o.material = new MeshBasicMaterial({ map: tex, toneMapped: false }); }
+    });
+    holder.add(root);
+    // dark well under the keys, so the aluminium doesn't show through the gaps
+    const well = new Mesh(new PlaneGeometry(7.02, 2.42), new MeshBasicMaterial({ color: 0x08080a }));
+    well.rotation.x = -Math.PI / 2; well.position.set(0, 0.012, 2.52); holder.add(well);
+    ready = true; dirty = true;
+  });
+  // keeps references used below
+  const lidOpen = (v) => { if (lid) lid.rotation.x = v; };
 
   // ---------- screen content ----------
   const imgs = CASES.map((c) => { const im = new Image(); im.decoding = 'async'; im.src = c.img; im.onload = () => { dirty = true; }; return im; });
@@ -200,9 +144,9 @@ function init() {
     const open = ease(seg(p, 0.1, 0.28));
     const on = seg(p, 0.16, 0.26);
     // where the laptop sits once open
-    const fit = wide ? Math.min(1.3, (halfW * 2 * 0.6) / W) : Math.min(1.2, (halfW * 2 * 0.8) / W);
+    const fit = wide ? Math.min(1.15, (halfW * 2 * 0.5) / W) : Math.min(1.2, (halfW * 2 * 0.8) / W);
     const endX = wide ? halfW * 0.3 : 0;
-    const endY = wide ? -7 * fit - halfH * 0.14 : halfH * 0.32 - 9 * fit;
+    const endY = wide ? -4 * fit - halfH * 0.06 : halfH * 0.32 - 9 * fit;
     const startS = wide ? fit * 0.7 : fit * 0.85;
     const s = lerp(startS, fit, turn);
     laptop.scale.setScalar(s);
@@ -214,7 +158,7 @@ function init() {
     const tr = idx < N - 1 ? ease(seg(local, 0.82, 1)) : 0;
     const sway = Math.sin(seg(p, C0, C1) * Math.PI * N) * 0.06 * on;
     laptop.rotation.set(lerp(0.7, 0.3, turn), lerp(-Math.PI * 1.15, wide ? -0.22 : 0, turn) + sway, 0);
-    lid.rotation.x = lerp(Math.PI / 2, -0.18, open);
+    lidOpen(lerp(1.575, -0.38, open));
     paint(idx, tr, on);
 
     // overlays
@@ -239,13 +183,13 @@ function init() {
     const r = canvas.getBoundingClientRect();
     m.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(m, camera);
-    if (ray.intersectObject(screen).length) location.href = CASES[active].href;
+    if (screen && ray.intersectObject(screen).length) location.href = CASES[active].href;
   });
   canvas.addEventListener('mousemove', (e) => {
     if (active < 0) { canvas.style.cursor = ''; return; }
     const r = canvas.getBoundingClientRect();
     m.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(m, camera);
-    canvas.style.cursor = ray.intersectObject(screen).length ? 'pointer' : '';
+    canvas.style.cursor = screen && ray.intersectObject(screen).length ? 'pointer' : '';
   });
 }
