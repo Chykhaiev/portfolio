@@ -4,7 +4,7 @@
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, MeshPhysicalMaterial, ShaderMaterial,
   CanvasTexture, SRGBColorSpace, NeutralToneMapping, PMREMGenerator, Raycaster, Vector2, Vector3, MathUtils,
-  DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
+  Box3, DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
 } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import Lenis from 'lenis';
@@ -119,6 +119,48 @@ function init() {
 
   // ---------- layout + scroll ----------
   let vw = 1, vh = 1, halfH = 1, halfW = 1, wide = true;
+  // final (open) pose, measured in real screen pixels so the laptop fills its block exactly
+  const fin = { ok: false, s: 1, x: 0, y: 0, cy: 0, cLeft: 0, capW: 400 };
+  const HEAD = 72;
+  function bboxPx() {
+    laptop.updateMatrixWorld(true);
+    const b = new Box3().setFromObject(holder);
+    let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+    for (let i = 0; i < 8; i++) {
+      const v = new Vector3(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z).project(camera);
+      const px = (v.x + 1) / 2 * vw, py = (1 - v.y) / 2 * vh;
+      x0 = Math.min(x0, px); x1 = Math.max(x1, px); y0 = Math.min(y0, py); y1 = Math.max(y1, py);
+    }
+    return { w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
+  }
+  function measureFinal() {
+    if (!lid) return;
+    const keep = { s: laptop.scale.x, p: laptop.position.clone(), r: laptop.rotation.clone(), l: lid.rotation.x };
+    const cont = Math.min(1600, vw - 2 * Math.max(24, vw * 0.035));
+    const cLeft = (vw - cont) / 2;
+    // the laptop box: right part of the container on desktop, top part of the screen on phones
+    const box = wide
+      ? { w: cont * 0.62, h: (vh - HEAD) * 0.94, cx: 0, cy: HEAD + (vh - HEAD) / 2 }
+      : { w: vw * 0.94, h: vh * 0.42, cx: vw / 2, cy: HEAD + vh * 0.22 };
+    laptop.rotation.set(0.26, wide ? -0.24 : 0, 0); lid.rotation.x = 0.04;
+    let s = 1, m;
+    for (let k = 0; k < 4; k++) {            // perspective is not linear in scale, so refine a few times
+      laptop.scale.setScalar(s); laptop.position.set(0, 0, 0);
+      m = bboxPx();
+      s *= Math.min(box.w / m.w, box.h / m.h);
+    }
+    laptop.scale.setScalar(s); laptop.position.set(0, 0, 0); m = bboxPx();
+    const tx = wide ? cLeft + cont - m.w / 2 : box.cx;
+    const wpp = (2 * halfW) / vw;
+    let x = 0, y = 0;
+    for (let k = 0; k < 5; k++) {            // perspective again: correct the position until the box sits where we want it
+      x += (tx - m.cx) * wpp; y -= (box.cy - m.cy) * wpp;
+      laptop.position.set(x, y, 0); m = bboxPx();
+    }
+    fin.s = s; fin.x = x; fin.y = y;
+    fin.cy = box.cy; fin.cLeft = cLeft; fin.capW = Math.max(320, cont - m.w - 56); fin.ok = true;
+    laptop.scale.setScalar(keep.s); laptop.position.copy(keep.p); laptop.rotation.copy(keep.r); lid.rotation.x = keep.l;
+  }
   function resize() {
     vw = stage.clientWidth; vh = stage.clientHeight;
     const dpr = Math.min(window.devicePixelRatio || 1, vw < 760 ? 1.75 : 2);
@@ -126,6 +168,7 @@ function init() {
     camera.aspect = vw / vh; camera.updateProjectionMatrix();
     halfH = 100 * Math.tan(MathUtils.degToRad(15)); halfW = halfH * camera.aspect;
     wide = vw >= 900;
+    fin.ok = false;
     dirty = true;
   }
   new ResizeObserver(resize).observe(stage);
@@ -180,13 +223,8 @@ function init() {
     const turn = easeInOut(seg(p, 0.0, 0.24));
     const open = easeOutBack(seg(p, 0.1, 0.27), 0.9);
     const on = seg(p, 0.17, 0.27);
-    // desktop: text and laptop share one wide container; the laptop takes the right ~64% and the full block height
-    const cont = Math.min(1600, vw - 2 * Math.max(24, vw * 0.035));
-    const cLeft = (vw - cont) / 2;
+    if (!fin.ok) measureFinal();
     const wpp = (2 * halfW) / vw;                                   // world units per css pixel
-    const lapPx = Math.min(cont * 0.6, (vh - 72) * 1.12);
-    const fit = wide ? (lapPx * wpp) / (W * 1.2) : Math.min(1.3, (halfW * 2 * 0.86) / W);
-    const endX = wide ? ((cLeft + cont - lapPx / 2) / vw * 2 - 1) * halfW : 0;
     // hero: the closed laptop is the main object, the title sits above it
     const startPx = wide ? Math.min(vw * 0.5, vh * 0.95) : vw * 0.86;
     const startS = (startPx * wpp) / (W * 1.08);
@@ -194,7 +232,7 @@ function init() {
     const lift = Math.sin(Math.PI * turn) * halfH * 0.05;           // a little lift mid-turn, like it is picked up
     const idle = 1 - turn;                                          // alive while waiting for the first scroll
     const bob = Math.sin(time * 1.1) * 0.35 * (0.35 + 0.65 * idle);
-    laptop.scale.setScalar(lerp(startS, fit, turn));
+    laptop.scale.setScalar(lerp(startS, fin.s, turn));
     const cp = seg(p, C0, C1) * N;
     const idx = clamp(Math.floor(cp), 0, N - 1);
     const local = cp - idx;
@@ -208,14 +246,7 @@ function init() {
       lerp(yaw0, wide ? -0.24 : 0, turn) + sway + mx * 0.12,
       lerp(-0.08, 0, turn),
     );
-    // place it, then nudge so its visual centre lands in the middle of the block (under the header on desktop)
-    const baseY = wide ? 0 : halfH * 0.32;
-    laptop.position.set(lerp(0, endX, turn), baseY, 0);
-    laptop.updateMatrixWorld(true);
-    const cNow = laptop.localToWorld(capV.set(0, 8.5, -3)).project(camera).y;
-    const want = wide ? 1 - (vh + 72) / vh : 1 - 2 * ((vh * 0.36) / vh);
-    const endY = baseY + (want - cNow) * halfH;
-    laptop.position.y = lerp(startY, endY, turn) + lift + bob;
+    laptop.position.set(lerp(0, fin.x, turn), lerp(startY, fin.y, turn) + lift + bob, 0);
     // studio light sweeps across the body while it turns
     scene.environmentRotation.y = 3 + turn * 1.4 + mx * 0.15;
     lidOpen(lerp(1.92, 0.04, Math.min(1.02, open)));
@@ -238,10 +269,9 @@ function init() {
     const cf = seg(p, 0.25, 0.31) * (1 - seg(p, 0.985, 1));
     capWrap.style.opacity = cf.toFixed(3);
     if (wide) {
-      const c = laptop.localToWorld(capV.set(0, 8.5, -3)).project(camera);
-      capWrap.style.left = `${cLeft.toFixed(1)}px`;
-      capWrap.style.width = `${Math.max(320, cont - lapPx - 48).toFixed(1)}px`;
-      capWrap.style.top = `${((1 - c.y) / 2 * vh).toFixed(1)}px`;
+      capWrap.style.left = `${fin.cLeft.toFixed(1)}px`;
+      capWrap.style.width = `${fin.capW.toFixed(1)}px`;
+      capWrap.style.top = `${fin.cy.toFixed(1)}px`;
     } else { capWrap.style.left = ''; capWrap.style.width = ''; capWrap.style.top = ''; }
     capWrap.style.pointerEvents = cf > 0.5 ? 'auto' : 'none';
     setActive(p >= C0 - 0.04 ? Math.min(N - 1, idx + (tr > 0.5 ? 1 : 0)) : -1);
