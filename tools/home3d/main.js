@@ -3,7 +3,7 @@
 // Homepage: a laptop that turns around and opens on scroll, then shows each case on its screen.
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, MeshPhysicalMaterial, ShaderMaterial,
-  CanvasTexture, SRGBColorSpace, NeutralToneMapping, PMREMGenerator, Raycaster, Vector2, MathUtils,
+  CanvasTexture, SRGBColorSpace, NeutralToneMapping, PMREMGenerator, Raycaster, Vector2, Vector3, MathUtils,
   DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
 } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -162,6 +162,7 @@ function init() {
     lenis.scrollTo(top + len * (C0 + (k + 0.5) * (C1 - C0) / N), { duration: 1.4 });
   }));
   const glowEl = document.querySelector('.lt-glow');
+  const capV = new Vector3();
   const easeOutBack = (x, k = 1.15) => 1 + (k + 1) * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2);
   const easeInOut = (x) => (x < 0.5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2); // quintic: slow start, slow landing
 
@@ -179,9 +180,14 @@ function init() {
     const turn = easeInOut(seg(p, 0.0, 0.24));
     const open = easeOutBack(seg(p, 0.1, 0.27), 0.9);
     const on = seg(p, 0.17, 0.27);
-    const fit = wide ? Math.min(1.3, (halfW * 2 * 0.52) / W) : Math.min(1.25, (halfW * 2 * 0.76) / W);
-    const endX = wide ? halfW * 0.36 : 0;
-    const endY = wide ? -4 * fit - halfH * 0.1 : halfH * 0.3 - 9 * fit;
+    // desktop: text and laptop share one wide container; the laptop fills its right ~58%
+    const cont = Math.min(1480, vw - 2 * Math.max(24, vw * 0.04));
+    const cLeft = (vw - cont) / 2;
+    const wpp = (2 * halfW) / vw;                                   // world units per css pixel
+    const lapPx = Math.min(cont * 0.56, vh * 0.98);
+    const fit = wide ? (lapPx * wpp) / (W * 1.08) : Math.min(1.25, (halfW * 2 * 0.76) / W);
+    const endX = wide ? ((cLeft + cont - lapPx / 2) / vw * 2 - 1) * halfW : 0;
+    const endY = wide ? -8.5 * fit - halfH * 0.04 : halfH * 0.3 - 9 * fit;
     const startS = wide ? fit * 0.88 : fit * 0.95;
     const startY = wide ? -halfH * 0.6 : -halfH * 0.36;
     // a little lift in the middle of the turn, like the laptop is picked up
@@ -214,9 +220,9 @@ function init() {
     if (glowEl) {
       const ga = GLOW[idx].split(',').map(Number), gb = GLOW[Math.min(N - 1, idx + 1)].split(',').map(Number);
       glowEl.style.setProperty('--glow-c', ga.map((v, k) => Math.round(lerp(v, gb[k], tr))).join(', '));
-      glowEl.style.opacity = (on * 0.9 * (1 - seg(p, 0.985, 1))).toFixed(3);
+      glowEl.style.opacity = (on * (1 - seg(p, 0.985, 1))).toFixed(3);
       const sp = laptop.position.clone().project(camera);
-      glowEl.style.transform = `translate3d(${((sp.x + 1) / 2 * vw).toFixed(1)}px, ${((1 - sp.y) / 2 * vh - vh * 0.05).toFixed(1)}px, 0) translate(-50%, -50%) scale(${(0.6 + 0.4 * turn).toFixed(3)})`;
+      glowEl.style.transform = `translate3d(${((sp.x + 1) / 2 * vw).toFixed(1)}px, ${((1 - sp.y) / 2 * vh - vh * 0.05).toFixed(1)}px, 0) translate(-50%, -50%) scale(${(0.7 + 0.5 * turn).toFixed(3)})`;
     }
 
     const hf = 1 - seg(p, 0.0, 0.09);
@@ -225,6 +231,12 @@ function init() {
     hero.style.visibility = hf <= 0.001 ? 'hidden' : 'visible';
     const cf = seg(p, 0.25, 0.31) * (1 - seg(p, 0.985, 1));
     capWrap.style.opacity = cf.toFixed(3);
+    if (wide) {
+      const c = laptop.localToWorld(capV.set(0, 8.5, -3)).project(camera);
+      capWrap.style.left = `${cLeft.toFixed(1)}px`;
+      capWrap.style.width = `${Math.max(320, cont - lapPx - 48).toFixed(1)}px`;
+      capWrap.style.top = `${((1 - c.y) / 2 * vh).toFixed(1)}px`;
+    } else { capWrap.style.left = ''; capWrap.style.width = ''; capWrap.style.top = ''; }
     capWrap.style.pointerEvents = cf > 0.5 ? 'auto' : 'none';
     setActive(p >= C0 - 0.04 ? Math.min(N - 1, idx + (tr > 0.5 ? 1 : 0)) : -1);
 
