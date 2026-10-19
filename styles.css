@@ -588,3 +588,33 @@ a.inline { color: var(--fg); text-decoration: underline; text-decoration-color: 
 .tldr .label { margin: 0 0 8px; }
 .tldr p:last-child { margin: 0; font-size: 15px; line-height: 1.5; color: var(--fg); text-wrap: pretty; }
 @media (max-width: 800px) { .tldr { grid-template-columns: 1fr; } }
+
+/* ============ Unified typography (matches the homepage) ============ */
+body { font-size: 17px; line-height: 1.47; letter-spacing: -0.022em; }
+em { font-family: var(--sans); font-style: normal; font-weight: inherit; letter-spacing: inherit; color: var(--fg); }
+.label, .eyebrow, .back, .meta dt, .toc a, .table-wrap th, .dec dt, .cs-n, .p-tag, .ba span, .goals span, .stats-row span, .facts dt { font-family: var(--sans) !important; font-size: 14px !important; font-weight: 400 !important; letter-spacing: -0.01em !important; }
+.case-title { font-size: clamp(52px, 7.6vw, 104px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; text-shadow: none; }
+.case-lead { font-size: clamp(21px, 2vw, 28px); line-height: 1.32; letter-spacing: -0.015em; }
+.meta dd { font-size: 17px; }
+.tldr p:last-child { font-size: 17px; line-height: 1.47; }
+.stats-row b { font-weight: 600; letter-spacing: -0.03em; }
+.cs h2 { font-size: clamp(34px, 4vw, 52px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.07; }
+.cs > p, .cs > .note { font-size: 19px; line-height: 1.5; letter-spacing: -0.015em; }
+.cs .note { font-size: 15px; }
+.sub { font-size: 21px; font-weight: 600; letter-spacing: -0.015em; }
+.steps h3, .learn h3, .goals h3 { font-size: 21px; font-weight: 600; letter-spacing: -0.015em; }
+.steps p, .learn p, .goals p, .sides p, .personas p, .ai-body p, .nda p { font-size: 17px; line-height: 1.47; }
+.decision h3 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 600; letter-spacing: -0.02em; }
+.decision h3 span { font-size: 14px; }
+.dec dd { font-size: 17px; line-height: 1.47; }
+.personas h3 { font-size: 24px; font-weight: 600; }
+.sides h3 { font-size: 15px; font-weight: 600; }
+.table-wrap table { font-size: 16px; }
+.loop b { font-size: 17px; font-weight: 600; }
+.loop span { font-size: 14px; }
+.ba b { font-weight: 600; font-size: 28px; }
+.duo figcaption, .live figcaption, .phones figcaption, .wide-scroll figcaption, .step-fig figcaption, figcaption { font-size: 14px; }
+.next-title { font-weight: 600; letter-spacing: -0.035em; }
+.card-title { font-weight: 600; }
+.more summary { font-size: 16px; }
+.nda-tag, .sev, .badge { font-weight: 600; }

@@ -39,9 +39,9 @@ img { display: block; max-width: 100%; }
 .lt-glow { position: absolute; left: 0; top: 0; width: min(95vw, 1200px); aspect-ratio: 1.5; border-radius: 50%; background: radial-gradient(closest-side, rgba(var(--glow, 41, 151, 255), .30), rgba(var(--glow, 41, 151, 255), .08) 55%, transparent 76%); filter: blur(30px); opacity: 0; pointer-events: none; will-change: transform, opacity; }
 .no3d .lt-glow { display: none; }
 .lt-hero { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(80px, 12vh, 130px) var(--gutter) 0; pointer-events: none; will-change: opacity, transform; }
-.h-eyebrow { font-size: 17px; color: var(--ash); letter-spacing: -0.022em; }
-.lt-title { margin-top: 14px; font-size: clamp(44px, 7.4vw, 96px); font-weight: 600; line-height: 1.04; letter-spacing: -0.035em; }
-.lt-sub { margin-top: 20px; max-width: 34ch; font-size: clamp(17px, 1.6vw, 21px); color: var(--ash); line-height: 1.38; }
+.h-eyebrow { font-size: clamp(17px, 1.5vw, 21px); color: var(--ash); letter-spacing: -0.022em; }
+.lt-title { margin-top: 16px; font-size: clamp(48px, 8.2vw, 112px); font-weight: 600; line-height: 1.04; letter-spacing: -0.035em; }
+.lt-sub { margin-top: 24px; max-width: 44ch; font-size: clamp(19px, 2vw, 28px); color: var(--ash); line-height: 1.38; }
 .lt-hint { position: absolute; bottom: 28px; left: 0; right: 0; font-size: 12px; color: var(--ash); }
 .lt-hint span { display: inline-block; animation: nudge 1.8s ease-in-out infinite; }
 @keyframes nudge { 50% { transform: translateY(4px); } }

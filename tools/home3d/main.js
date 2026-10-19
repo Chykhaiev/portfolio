@@ -183,7 +183,7 @@ function init() {
     const endX = wide ? halfW * 0.36 : 0;
     const endY = wide ? -4 * fit - halfH * 0.1 : halfH * 0.3 - 9 * fit;
     const startS = wide ? fit * 0.88 : fit * 0.95;
-    const startY = wide ? -halfH * 0.5 : -halfH * 0.32;
+    const startY = wide ? -halfH * 0.6 : -halfH * 0.36;
     // a little lift in the middle of the turn, like the laptop is picked up
     const lift = Math.sin(Math.PI * turn) * halfH * 0.06;
     laptop.scale.setScalar(lerp(startS, fit, turn));
