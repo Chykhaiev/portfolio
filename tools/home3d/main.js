@@ -4,7 +4,7 @@
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, MeshPhysicalMaterial, ShaderMaterial,
   CanvasTexture, SRGBColorSpace, NeutralToneMapping, PMREMGenerator, Raycaster, Vector2, Vector3, MathUtils,
-  Box3, DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
+  DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
 } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import Lenis from 'lenis';
@@ -122,14 +122,21 @@ function init() {
   // final (open) pose, measured in real screen pixels so the laptop fills its block exactly
   const fin = { ok: false, s: 1, x: 0, y: 0, cy: 0, cLeft: 0, capW: 400 };
   const HEAD = 72;
+  // silhouette of the real body meshes in screen pixels (an axis-aligned box over a rotated laptop is far too big)
+  const SIL = ['KjpcUkkMjGYeXkV', 'cdsXAgNBwwCPrIE', 'AQdtiiJfiakvCKx'];
+  let silMeshes = null;
+  const tv = new Vector3();
   function bboxPx() {
     laptop.updateMatrixWorld(true);
-    const b = new Box3().setFromObject(holder);
+    if (!silMeshes) silMeshes = SIL.map((n) => holder.getObjectByName(n)).filter(Boolean);
     let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
-    for (let i = 0; i < 8; i++) {
-      const v = new Vector3(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z).project(camera);
-      const px = (v.x + 1) / 2 * vw, py = (1 - v.y) / 2 * vh;
-      x0 = Math.min(x0, px); x1 = Math.max(x1, px); y0 = Math.min(y0, py); y1 = Math.max(y1, py);
+    for (const o of silMeshes) {
+      const pos = o.geometry.attributes.position, step = Math.max(1, Math.floor(pos.count / 1500));
+      for (let i = 0; i < pos.count; i += step) {
+        tv.fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld).project(camera);
+        const px = (tv.x + 1) / 2 * vw, py = (1 - tv.y) / 2 * vh;
+        if (px < x0) x0 = px; if (px > x1) x1 = px; if (py < y0) y0 = py; if (py > y1) y1 = py;
+      }
     }
     return { w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
   }
@@ -140,7 +147,7 @@ function init() {
     const cLeft = (vw - cont) / 2;
     // the laptop box: right part of the container on desktop, top part of the screen on phones
     const box = wide
-      ? { w: cont * 0.62, h: (vh - HEAD) * 0.94, cx: 0, cy: HEAD + (vh - HEAD) / 2 }
+      ? { w: cont * 0.6, h: (vh - HEAD) * 0.9, cx: 0, cy: HEAD + (vh - HEAD) / 2 }
       : { w: vw * 0.94, h: vh * 0.42, cx: vw / 2, cy: HEAD + vh * 0.22 };
     laptop.rotation.set(0.26, wide ? -0.24 : 0, 0); lid.rotation.x = 0.04;
     let s = 1, m;
