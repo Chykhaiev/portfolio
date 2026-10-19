@@ -180,23 +180,21 @@ function init() {
     const turn = easeInOut(seg(p, 0.0, 0.24));
     const open = easeOutBack(seg(p, 0.1, 0.27), 0.9);
     const on = seg(p, 0.17, 0.27);
-    // desktop: text and laptop share one wide container; the laptop fills its right ~58%
-    const cont = Math.min(1480, vw - 2 * Math.max(24, vw * 0.04));
+    // desktop: text and laptop share one wide container; the laptop takes the right ~64% and the full block height
+    const cont = Math.min(1600, vw - 2 * Math.max(24, vw * 0.035));
     const cLeft = (vw - cont) / 2;
     const wpp = (2 * halfW) / vw;                                   // world units per css pixel
-    const lapPx = Math.min(cont * 0.56, vh * 0.98);
-    const fit = wide ? (lapPx * wpp) / (W * 1.08) : Math.min(1.25, (halfW * 2 * 0.76) / W);
+    const lapPx = Math.min(cont * 0.6, (vh - 72) * 1.12);
+    const fit = wide ? (lapPx * wpp) / (W * 1.2) : Math.min(1.3, (halfW * 2 * 0.86) / W);
     const endX = wide ? ((cLeft + cont - lapPx / 2) / vw * 2 - 1) * halfW : 0;
-    const endY = wide ? -8.5 * fit - halfH * 0.04 : halfH * 0.3 - 9 * fit;
-    const startS = wide ? fit * 0.88 : fit * 0.95;
-    const startY = wide ? -halfH * 0.6 : -halfH * 0.36;
-    // a little lift in the middle of the turn, like the laptop is picked up
-    const lift = Math.sin(Math.PI * turn) * halfH * 0.06;
-    laptop.scale.setScalar(lerp(startS, fit, turn));
-    const idle = 1 - turn;                       // alive while waiting for the first scroll
+    // hero: the closed laptop is the main object, the title sits above it
+    const startPx = wide ? Math.min(vw * 0.5, vh * 0.95) : vw * 0.86;
+    const startS = (startPx * wpp) / (W * 1.08);
+    const startY = wide ? -halfH * 0.5 : -halfH * 0.32;
+    const lift = Math.sin(Math.PI * turn) * halfH * 0.05;           // a little lift mid-turn, like it is picked up
+    const idle = 1 - turn;                                          // alive while waiting for the first scroll
     const bob = Math.sin(time * 1.1) * 0.35 * (0.35 + 0.65 * idle);
-    laptop.position.set(lerp(0, endX, turn), lerp(startY, endY, turn) + lift + bob, 0);
-
+    laptop.scale.setScalar(lerp(startS, fit, turn));
     const cp = seg(p, C0, C1) * N;
     const idx = clamp(Math.floor(cp), 0, N - 1);
     const local = cp - idx;
@@ -210,6 +208,14 @@ function init() {
       lerp(yaw0, wide ? -0.24 : 0, turn) + sway + mx * 0.12,
       lerp(-0.08, 0, turn),
     );
+    // place it, then nudge so its visual centre lands in the middle of the block (under the header on desktop)
+    const baseY = wide ? 0 : halfH * 0.32;
+    laptop.position.set(lerp(0, endX, turn), baseY, 0);
+    laptop.updateMatrixWorld(true);
+    const cNow = laptop.localToWorld(capV.set(0, 8.5, -3)).project(camera).y;
+    const want = wide ? 1 - (vh + 72) / vh : 1 - 2 * ((vh * 0.36) / vh);
+    const endY = baseY + (want - cNow) * halfH;
+    laptop.position.y = lerp(startY, endY, turn) + lift + bob;
     // studio light sweeps across the body while it turns
     scene.environmentRotation.y = 3 + turn * 1.4 + mx * 0.15;
     lidOpen(lerp(1.92, 0.04, Math.min(1.02, open)));
@@ -221,8 +227,8 @@ function init() {
       const ga = GLOW[idx].split(',').map(Number), gb = GLOW[Math.min(N - 1, idx + 1)].split(',').map(Number);
       glowEl.style.setProperty('--glow-c', ga.map((v, k) => Math.round(lerp(v, gb[k], tr))).join(', '));
       glowEl.style.opacity = (on * (1 - seg(p, 0.985, 1))).toFixed(3);
-      const sp = laptop.position.clone().project(camera);
-      glowEl.style.transform = `translate3d(${((sp.x + 1) / 2 * vw).toFixed(1)}px, ${((1 - sp.y) / 2 * vh - vh * 0.05).toFixed(1)}px, 0) translate(-50%, -50%) scale(${(0.7 + 0.5 * turn).toFixed(3)})`;
+      const sp = laptop.localToWorld(capV.set(0, 7, -2)).project(camera);
+      glowEl.style.transform = `translate3d(${((sp.x + 1) / 2 * vw).toFixed(1)}px, ${((1 - sp.y) / 2 * vh).toFixed(1)}px, 0) translate(-50%, -50%) scale(${(0.8 + 0.3 * turn).toFixed(3)})`;
     }
 
     const hf = 1 - seg(p, 0.0, 0.09);
