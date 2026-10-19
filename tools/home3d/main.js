@@ -1,5 +1,5 @@
 import "./ui.js";
-// MacBook model: pmndrs/examples (floating-laptop), MIT licence; Draco decoded for a self-contained file.
+// MacBook Pro 14 (M5) model from Sketchfab, Free Standard licence; wallpaper texture and vertex colours stripped, normals quantised.
 // Homepage: a laptop that turns around and opens on scroll, then shows each case on its screen.
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, PlaneGeometry, MeshPhysicalMaterial, MeshBasicMaterial,
@@ -35,7 +35,7 @@ if (!stage || !webglOK() || reduce) {
 function init() {
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.92;
+  renderer.toneMappingExposure = 1.0;
   renderer.outputColorSpace = SRGBColorSpace;
   const scene = new Scene();
   const camera = new PerspectiveCamera(30, 1, 1, 1000);
@@ -44,35 +44,30 @@ function init() {
   // ---------- studio light ----------
   const pmrem = new PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environmentIntensity = 0.75;
+  scene.environmentIntensity = 1.0;
   const key = new DirectionalLight(0xffffff, 1.4); key.position.set(-40, 80, 60); scene.add(key);
 
   // ---------- MacBook model ----------
-  const W = 31.2;                       // layout width in scene units
+  const W = 31.2;                       // layout width in scene units (model is 0.312 m wide)
   const laptop = new Group(); scene.add(laptop);
   const holder = new Group(); laptop.add(holder);
-  const k = W / 8.82;                   // model is ~8.82 units wide
-  holder.scale.setScalar(k);
-  holder.position.set(0, 0, -3.4 * k);
-  let lid = null, screen = null, ready = false;
-  const sc = document.createElement('canvas'); sc.width = 1600; sc.height = 1036;
+  holder.scale.setScalar(W / 0.312);
+  let lid = null, screen = null;
+  const sc = document.createElement('canvas'); sc.width = 1600; sc.height = 1040;
   const g = sc.getContext('2d');
   const tex = new CanvasTexture(sc); tex.colorSpace = SRGBColorSpace; tex.flipY = false; tex.anisotropy = 8;
-  new GLTFLoader().load('/models/macbook.glb', (gl) => {
+  new GLTFLoader().load('/models/macbook-m5.glb', (gl) => {
     const root = gl.scene;
-    root.traverse((o) => {
-      if (o.name === 'screenflip') lid = o;
-      if (!o.isMesh) return;
-      const m = o.material;
-      if (m.name === 'aluminium') { o.material = new MeshPhysicalMaterial({ color: 0xb9bbbf, metalness: 1, roughness: 0.3, clearcoat: 0.2, clearcoatRoughness: 0.3 }); }
-      if (m.name === 'trackpad') { o.material = new MeshPhysicalMaterial({ color: 0x9ea0a5, metalness: 0.2, roughness: 0.55, side: 2 }); }
-      if (m.name && m.name.startsWith('screen')) { screen = o; o.material = new MeshBasicMaterial({ map: tex, toneMapped: false }); }
-    });
-    holder.add(root);
-    // dark well under the keys, so the aluminium doesn't show through the gaps
-    const well = new Mesh(new PlaneGeometry(7.02, 2.42), new MeshBasicMaterial({ color: 0x08080a }));
-    well.rotation.x = -Math.PI / 2; well.position.set(0, 0.012, 2.52); holder.add(well);
-    ready = true; dirty = true;
+    holder.add(root); holder.updateMatrixWorld(true);
+    screen = root.getObjectByName('tfTbkkzhxqpKRgC');
+    if (screen) screen.material = new MeshBasicMaterial({ map: tex, toneMapped: false });
+    const lidNode = root.getObjectByName('RcexTyyhpuJYATQ');
+    if (lidNode) {
+      lid = new Group(); lid.position.set(0, 0, -0.108); holder.add(lid); lid.updateMatrixWorld(true);
+      lid.attach(lidNode);
+    }
+    dirty = true;
+    document.documentElement.classList.add('lt-ready');
   });
   // keeps references used below
   const lidOpen = (v) => { if (lid) lid.rotation.x = v; };
@@ -146,7 +141,7 @@ function init() {
     // where the laptop sits once open
     const fit = wide ? Math.min(1.15, (halfW * 2 * 0.5) / W) : Math.min(1.2, (halfW * 2 * 0.8) / W);
     const endX = wide ? halfW * 0.3 : 0;
-    const endY = wide ? -4 * fit - halfH * 0.06 : halfH * 0.32 - 9 * fit;
+    const endY = wide ? -4 * fit - halfH * 0.12 : halfH * 0.32 - 9 * fit;
     const startS = wide ? fit * 0.7 : fit * 0.85;
     const s = lerp(startS, fit, turn);
     laptop.scale.setScalar(s);
@@ -158,7 +153,7 @@ function init() {
     const tr = idx < N - 1 ? ease(seg(local, 0.82, 1)) : 0;
     const sway = Math.sin(seg(p, C0, C1) * Math.PI * N) * 0.06 * on;
     laptop.rotation.set(lerp(0.7, 0.3, turn), lerp(-Math.PI * 1.15, wide ? -0.22 : 0, turn) + sway, 0);
-    lidOpen(lerp(1.575, -0.38, open));
+    lidOpen(lerp(1.92, 0.04, open));
     paint(idx, tr, on);
 
     // overlays
