@@ -100,11 +100,23 @@ function init() {
   CASES.forEach((c, i) => {
     const im = new Image(); im.decoding = 'async'; im.src = c.img;
     im.onload = () => {
-      const cv = document.createElement('canvas'); cv.width = 1600; cv.height = 1040;
-      const x = cv.getContext('2d'); x.fillStyle = '#000'; x.fillRect(0, 0, cv.width, cv.height);
-      const s = Math.max(cv.width / im.naturalWidth, cv.height / im.naturalHeight);
+      const cv = document.createElement('canvas'); cv.width = 2048; cv.height = 1331;
+      const x = cv.getContext('2d');
+      // whole image, never cropped: fit inside a safe area (clear of the notch and the rounded corners), centred
+      const edge = (() => {                          // fill the free space with the image's own edge colour
+        const c = document.createElement('canvas'); c.width = 16; c.height = 16; const e = c.getContext('2d');
+        e.drawImage(im, 0, 0, 16, 16); const d = e.getImageData(0, 0, 16, 16).data; let r = 0, g = 0, bl = 0, n = 0;
+        for (let yy = 0; yy < 16; yy++) for (let xx = 0; xx < 16; xx++) { if (xx && yy && xx < 15 && yy < 15) continue; const k = (yy * 16 + xx) * 4; r += d[k]; g += d[k + 1]; bl += d[k + 2]; n++; }
+        return `rgb(${Math.round(r / n)}, ${Math.round(g / n)}, ${Math.round(bl / n)})`;
+      })();
+      x.fillStyle = edge; x.fillRect(0, 0, cv.width, cv.height);
+      const padX = cv.width * 0.025, padTop = cv.height * 0.06, padBot = cv.height * 0.03;
+      const aw = cv.width - padX * 2, ah = cv.height - padTop - padBot;
+      const s = Math.min(aw / im.naturalWidth, ah / im.naturalHeight);
       const w = im.naturalWidth * s, h = im.naturalHeight * s;
-      x.drawImage(im, (cv.width - w) / 2, (cv.height - h) / 2, w, h);
+      const ox = (cv.width - w) / 2, oy = padTop + (ah - h) / 2;
+      x.save(); x.beginPath(); x.roundRect(ox, oy, w, h, 14); x.clip();
+      x.imageSmoothingQuality = 'high'; x.drawImage(im, ox, oy, w, h); x.restore();
       const tx = new CanvasTexture(cv); tx.colorSpace = SRGBColorSpace; tx.flipY = false; tx.anisotropy = 8;
       tx.generateMipmaps = true; caseTex[i] = tx; renderer.initTexture(tx); dirty = true;
     };
