@@ -1,4 +1,4 @@
-import "./ui.js";
+
 // MacBook Pro 14 (M5) model from Sketchfab, Free Standard licence; wallpaper texture and vertex colours stripped, normals quantised.
 // Homepage: a laptop that turns around and opens on scroll, then shows each case on its screen.
 import {
@@ -213,7 +213,7 @@ function init() {
     // soft coloured glow behind the laptop, picks up each case
     if (glowEl) {
       const ga = GLOW[idx].split(',').map(Number), gb = GLOW[Math.min(N - 1, idx + 1)].split(',').map(Number);
-      glowEl.style.setProperty('--glow', ga.map((v, k) => Math.round(lerp(v, gb[k], tr))).join(', '));
+      glowEl.style.setProperty('--glow-c', ga.map((v, k) => Math.round(lerp(v, gb[k], tr))).join(', '));
       glowEl.style.opacity = (on * 0.9 * (1 - seg(p, 0.985, 1))).toFixed(3);
       const sp = laptop.position.clone().project(camera);
       glowEl.style.transform = `translate3d(${((sp.x + 1) / 2 * vw).toFixed(1)}px, ${((1 - sp.y) / 2 * vh - vh * 0.05).toFixed(1)}px, 0) translate(-50%, -50%) scale(${(0.6 + 0.4 * turn).toFixed(3)})`;
