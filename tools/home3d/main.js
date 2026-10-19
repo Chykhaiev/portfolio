@@ -69,7 +69,7 @@ function init() {
     uniforms: { a: { value: blank }, b: { value: blank }, t: { value: 0 }, on: { value: 0 } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
     fragmentShader: 'uniform sampler2D a; uniform sampler2D b; uniform float t; uniform float on; varying vec2 vUv;\n'
-      + 'void main(){ vec2 uvb = vUv + vec2(0.0, (1.0 - t) * 0.025); vec2 uva = vUv - vec2(0.0, t * 0.025);\n'
+      + 'void main(){ vec2 uvb = vUv; vec2 uva = vUv;\n'
       + ' vec3 c = mix(texture2D(a, uva).rgb, texture2D(b, uvb).rgb, t) * 0.94 * on; gl_FragColor = vec4(c, 1.0);\n'
       + ' #include <colorspace_fragment>\n}',
     toneMapped: false,
@@ -101,22 +101,9 @@ function init() {
     const im = new Image(); im.decoding = 'async'; im.src = c.img;
     im.onload = () => {
       const cv = document.createElement('canvas'); cv.width = 2048; cv.height = 1331;
-      const x = cv.getContext('2d');
-      // whole image, never cropped: fit inside a safe area (clear of the notch and the rounded corners), centred
-      const edge = (() => {                          // fill the free space with the image's own edge colour
-        const c = document.createElement('canvas'); c.width = 16; c.height = 16; const e = c.getContext('2d');
-        e.drawImage(im, 0, 0, 16, 16); const d = e.getImageData(0, 0, 16, 16).data; let r = 0, g = 0, bl = 0, n = 0;
-        for (let yy = 0; yy < 16; yy++) for (let xx = 0; xx < 16; xx++) { if (xx && yy && xx < 15 && yy < 15) continue; const k = (yy * 16 + xx) * 4; r += d[k]; g += d[k + 1]; bl += d[k + 2]; n++; }
-        return `rgb(${Math.round(r / n)}, ${Math.round(g / n)}, ${Math.round(bl / n)})`;
-      })();
-      x.fillStyle = edge; x.fillRect(0, 0, cv.width, cv.height);
-      const padX = cv.width * 0.025, padTop = cv.height * 0.06, padBot = cv.height * 0.03;
-      const aw = cv.width - padX * 2, ah = cv.height - padTop - padBot;
-      const s = Math.min(aw / im.naturalWidth, ah / im.naturalHeight);
-      const w = im.naturalWidth * s, h = im.naturalHeight * s;
-      const ox = (cv.width - w) / 2, oy = padTop + (ah - h) / 2;
-      x.save(); x.beginPath(); x.roundRect(ox, oy, w, h, 14); x.clip();
-      x.imageSmoothingQuality = 'high'; x.drawImage(im, ox, oy, w, h); x.restore();
+      // the screen covers are prepared at the display's exact 1.54:1 ratio (whole design visible, background extended), so they fill it 1:1
+      const x = cv.getContext('2d'); x.imageSmoothingQuality = 'high';
+      x.drawImage(im, 0, 0, cv.width, cv.height);
       const tx = new CanvasTexture(cv); tx.colorSpace = SRGBColorSpace; tx.flipY = false; tx.anisotropy = 8;
       tx.generateMipmaps = true; caseTex[i] = tx; renderer.initTexture(tx); dirty = true;
     };
