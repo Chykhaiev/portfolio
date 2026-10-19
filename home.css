@@ -46,18 +46,18 @@ img { display: block; max-width: 100%; }
 .lt-hint span { display: inline-block; animation: nudge 1.8s ease-in-out infinite; }
 @keyframes nudge { 50% { transform: translateY(4px); } }
 
-.lt-caps { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-50%); width: min(34vw, 420px); opacity: 0; pointer-events: none; }
-.lt-label { margin-bottom: 18px; }
-.lt-list { position: relative; min-height: 300px; }
+.lt-caps { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-50%); width: min(40vw, 560px); opacity: 0; pointer-events: none; }
+.lt-label { margin-bottom: 22px; font-size: 19px; }
+.lt-list { position: relative; min-height: 380px; }
 .lt-case { position: absolute; inset: 0 auto auto 0; width: 100%; opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .6s cubic-bezier(.2, .7, .2, 1); visibility: hidden; }
 .lt-case.on { opacity: 1; transform: none; visibility: visible; }
 .lt-thumb { display: none; }
-.lt-meta { font-size: 14px; color: var(--ash); font-variant-numeric: tabular-nums; }
-.lt-case h2 { margin-top: 8px; font-size: clamp(32px, 3.6vw, 48px); font-weight: 600; line-height: 1.06; letter-spacing: -0.03em; }
-.lt-text { margin-top: 14px; color: var(--ash); max-width: 36ch; }
+.lt-meta { font-size: 17px; color: var(--ash); font-variant-numeric: tabular-nums; }
+.lt-case h2 { margin-top: 10px; font-size: clamp(40px, 4.6vw, 68px); font-weight: 600; line-height: 1.06; letter-spacing: -0.03em; }
+.lt-text { margin-top: 18px; color: var(--ash); max-width: 30ch; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.38; letter-spacing: -0.015em; }
 .lt-tags { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-.lt-tags li { font-size: 12px; color: var(--platinum); padding: 4px 10px; border-radius: 99px; background: var(--charcoal); }
-.h-link { display: inline-flex; gap: 6px; margin-top: 22px; color: var(--link); font-size: 17px; }
+.lt-tags li { font-size: 14px; color: var(--platinum); padding: 4px 10px; border-radius: 99px; background: var(--charcoal); }
+.h-link { display: inline-flex; gap: 6px; margin-top: 26px; color: var(--link); font-size: 21px; }
 .h-link span { transition: transform .25s; }
 .h-link:hover span { transform: translateX(3px); }
 .lt-dots { display: flex; gap: 8px; margin-top: 30px; }

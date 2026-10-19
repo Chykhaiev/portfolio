@@ -2,7 +2,7 @@ import "./ui.js";
 // MacBook Pro 14 (M5) model from Sketchfab, Free Standard licence; wallpaper texture and vertex colours stripped, normals quantised.
 // Homepage: a laptop that turns around and opens on scroll, then shows each case on its screen.
 import {
-  WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, PlaneGeometry, MeshPhysicalMaterial, MeshBasicMaterial,
+  WebGLRenderer, Scene, PerspectiveCamera, Group, Mesh, MeshPhysicalMaterial, ShaderMaterial,
   CanvasTexture, SRGBColorSpace, NeutralToneMapping, PMREMGenerator, Raycaster, Vector2, MathUtils,
   DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
 } from 'three';
@@ -62,15 +62,24 @@ function init() {
   const holder = new Group(); laptop.add(holder);
   holder.scale.setScalar(W / 0.312);
   let lid = null, screen = null, glassMesh = null;
-  const sc = document.createElement('canvas'); sc.width = 1600; sc.height = 1040;
-  const g = sc.getContext('2d');
-  const tex = new CanvasTexture(sc); tex.colorSpace = SRGBColorSpace; tex.flipY = false; tex.anisotropy = 8;
+  // one texture per case, prepared once; switching cases only changes two uniforms (no texture uploads while scrolling)
+  const blank = (() => { const c = document.createElement('canvas'); c.width = c.height = 4; c.getContext('2d').fillRect(0, 0, 4, 4); const tx = new CanvasTexture(c); tx.colorSpace = SRGBColorSpace; tx.flipY = false; return tx; })();
+  const caseTex = CASES.map(() => blank);
+  const screenMat = new ShaderMaterial({
+    uniforms: { a: { value: blank }, b: { value: blank }, t: { value: 0 }, on: { value: 0 } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: 'uniform sampler2D a; uniform sampler2D b; uniform float t; uniform float on; varying vec2 vUv;\n'
+      + 'void main(){ vec2 uvb = vUv + vec2(0.0, (1.0 - t) * 0.025); vec2 uva = vUv - vec2(0.0, t * 0.025);\n'
+      + ' vec3 c = mix(texture2D(a, uva).rgb, texture2D(b, uvb).rgb, t) * 0.94 * on; gl_FragColor = vec4(c, 1.0);\n'
+      + ' #include <colorspace_fragment>\n}',
+    toneMapped: false,
+  });
   new GLTFLoader().load('/models/macbook-m5.glb', (gl) => {
     const root = gl.scene;
     holder.add(root); holder.updateMatrixWorld(true);
     screen = root.getObjectByName('tfTbkkzhxqpKRgC');
     if (screen) {
-      screen.material = new MeshBasicMaterial({ map: tex, toneMapped: false, color: 0xeeeeee });
+      screen.material = screenMat;
       // glass over the display: catches the studio reflections like a real screen
       const glass = new Mesh(screen.geometry, new MeshPhysicalMaterial({ color: 0x000000, metalness: 0, roughness: 0.06, transparent: true, opacity: 0.1, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
       glass.position.copy(screen.position); glass.quaternion.copy(screen.quaternion); glass.scale.copy(screen.scale);
@@ -88,25 +97,24 @@ function init() {
   const lidOpen = (v) => { if (lid) lid.rotation.x = v; };
 
   // ---------- screen content ----------
-  const imgs = CASES.map((c) => { const im = new Image(); im.decoding = 'async'; im.src = c.img; im.onload = () => { dirty = true; }; return im; });
-  function drawCover(im, alpha, dy) {
-    if (!im.complete || !im.naturalWidth) return;
-    const s = Math.max(sc.width / im.naturalWidth, sc.height / im.naturalHeight);
-    const w = im.naturalWidth * s, h = im.naturalHeight * s;
-    g.globalAlpha = alpha;
-    g.drawImage(im, (sc.width - w) / 2, (sc.height - h) / 2 + dy, w, h);
-    g.globalAlpha = 1;
-  }
-  let lastKey = '';
+  CASES.forEach((c, i) => {
+    const im = new Image(); im.decoding = 'async'; im.src = c.img;
+    im.onload = () => {
+      const cv = document.createElement('canvas'); cv.width = 1600; cv.height = 1040;
+      const x = cv.getContext('2d'); x.fillStyle = '#000'; x.fillRect(0, 0, cv.width, cv.height);
+      const s = Math.max(cv.width / im.naturalWidth, cv.height / im.naturalHeight);
+      const w = im.naturalWidth * s, h = im.naturalHeight * s;
+      x.drawImage(im, (cv.width - w) / 2, (cv.height - h) / 2, w, h);
+      const tx = new CanvasTexture(cv); tx.colorSpace = SRGBColorSpace; tx.flipY = false; tx.anisotropy = 8;
+      tx.generateMipmaps = true; caseTex[i] = tx; renderer.initTexture(tx); dirty = true;
+    };
+  });
   function paint(idx, t, on) {
-    const key = `${idx}|${t.toFixed(3)}|${on.toFixed(3)}|${imgs.map((i) => i.complete).join('')}`;
-    if (key === lastKey) return; lastKey = key;
-    g.fillStyle = '#000'; g.fillRect(0, 0, sc.width, sc.height);
     const a = Math.floor(idx), b = Math.min(a + 1, CASES.length - 1);
-    if (t <= 0 || a === b) drawCover(imgs[a], 1, 0);
-    else { drawCover(imgs[a], 1 - t, -t * 60); drawCover(imgs[b], t, (1 - t) * 60); }
-    if (on < 1) { g.fillStyle = `rgba(0,0,0,${1 - on})`; g.fillRect(0, 0, sc.width, sc.height); }
-    tex.needsUpdate = true;
+    screenMat.uniforms.a.value = caseTex[a];
+    screenMat.uniforms.b.value = caseTex[b];
+    screenMat.uniforms.t.value = a === b ? 0 : t;
+    screenMat.uniforms.on.value = on;
   }
 
   // ---------- layout + scroll ----------
@@ -171,8 +179,8 @@ function init() {
     const turn = easeInOut(seg(p, 0.0, 0.24));
     const open = easeOutBack(seg(p, 0.1, 0.27), 0.9);
     const on = seg(p, 0.17, 0.27);
-    const fit = wide ? Math.min(1.3, (halfW * 2 * 0.56) / W) : Math.min(1.25, (halfW * 2 * 0.76) / W);
-    const endX = wide ? halfW * 0.28 : 0;
+    const fit = wide ? Math.min(1.3, (halfW * 2 * 0.52) / W) : Math.min(1.25, (halfW * 2 * 0.76) / W);
+    const endX = wide ? halfW * 0.36 : 0;
     const endY = wide ? -4 * fit - halfH * 0.1 : halfH * 0.3 - 9 * fit;
     const startS = wide ? fit * 0.88 : fit * 0.95;
     const startY = wide ? -halfH * 0.5 : -halfH * 0.32;
@@ -186,9 +194,10 @@ function init() {
     const cp = seg(p, C0, C1) * N;
     const idx = clamp(Math.floor(cp), 0, N - 1);
     const local = cp - idx;
-    const tr = idx < N - 1 ? ease(seg(local, 0.8, 1)) : 0;
+    const tr = idx < N - 1 ? ease(seg(local, 0.62, 1)) : 0;
     // between cases the laptop leans a little and comes back
-    const sway = Math.sin(tr * Math.PI) * 0.12 + Math.sin(time * 0.6) * 0.015 * turn;
+    const cases01 = seg(p, C0, C1);
+    const sway = (Math.sin(cases01 * Math.PI * 2) * 0.07 + Math.sin(time * 0.6) * 0.012) * turn;
     const yaw0 = -Math.PI * 1.12 + Math.sin(time * 0.5) * 0.06 * idle;
     laptop.rotation.set(
       lerp(0.78, 0.26, turn) + my * 0.05 * turn,
@@ -203,8 +212,8 @@ function init() {
 
     // soft coloured glow behind the laptop, picks up each case
     if (glowEl) {
-      const ci = Math.min(N - 1, idx + (tr > 0.5 ? 1 : 0));
-      glowEl.style.setProperty('--glow', GLOW[ci]);
+      const ga = GLOW[idx].split(',').map(Number), gb = GLOW[Math.min(N - 1, idx + 1)].split(',').map(Number);
+      glowEl.style.setProperty('--glow', ga.map((v, k) => Math.round(lerp(v, gb[k], tr))).join(', '));
       glowEl.style.opacity = (on * 0.9 * (1 - seg(p, 0.985, 1))).toFixed(3);
       const sp = laptop.position.clone().project(camera);
       glowEl.style.transform = `translate3d(${((sp.x + 1) / 2 * vw).toFixed(1)}px, ${((1 - sp.y) / 2 * vh - vh * 0.05).toFixed(1)}px, 0) translate(-50%, -50%) scale(${(0.6 + 0.4 * turn).toFixed(3)})`;
