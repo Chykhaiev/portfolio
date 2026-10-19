@@ -6,6 +6,6 @@ await esbuild.build({
   entryPoints: [new URL('./main.js', import.meta.url).pathname],
   bundle: true, minify: true, format: 'esm', target: 'es2020',
   outfile: '/home/claude/portfolio/home3d.js', legalComments: 'none', logLevel: 'error',
-  plugins: [{ name: 'v', setup(b) { b.onResolve({ filter: /^three$/ }, () => ({ path: `${V}/three/build/three.module.js` })); b.onResolve({ filter: /^three\/addons\// }, (a) => ({ path: `${V}/three/examples/jsm/${a.path.slice(13)}` })); } }],
+  plugins: [{ name: 'v', setup(b) { b.onResolve({ filter: /^lenis$/ }, () => ({ path: `${V}/lenis/packages/core/index.ts` })); b.onResolve({ filter: /^three$/ }, () => ({ path: `${V}/three/build/three.module.js` })); b.onResolve({ filter: /^three\/addons\// }, (a) => ({ path: `${V}/three/examples/jsm/${a.path.slice(13)}` })); } }],
 });
 console.log('ok');

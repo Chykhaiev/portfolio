@@ -7,6 +7,7 @@ import {
   DataTexture, DataUtils, RGBAFormat, FloatType, EquirectangularReflectionMapping, LinearSRGBColorSpace, LinearFilter,
 } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import Lenis from 'lenis';
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -122,14 +123,26 @@ function init() {
   new ResizeObserver(resize).observe(stage);
 
   let target = 0, prog = 0, dirty = true;
+  // smooth scrolling: wheel/trackpad input is eased, so the 3D follows it without steps
+  const lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.9, anchors: true });
   function readScroll() {
     const r = track.getBoundingClientRect();
     target = clamp(-r.top / Math.max(1, r.height - window.innerHeight));
   }
-  addEventListener('scroll', () => { readScroll(); }, { passive: true });
+  lenis.on('scroll', readScroll);
+  addEventListener('scroll', readScroll, { passive: true });
   readScroll(); prog = target;
 
+  // pointer parallax (desktop only)
+  let px = 0, py = 0, mx = 0, my = 0;
+  addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; px = (e.clientX / innerWidth) * 2 - 1; py = (e.clientY / innerHeight) * 2 - 1; }, { passive: true });
+
+  // render only while the scene is on screen
+  let visible = true;
+  new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(track);
+
   const N = CASES.length, C0 = 0.3, C1 = 0.97;
+  const GLOW = ['163, 230, 53', '255, 107, 44', '203, 236, 121', '255, 122, 61', '41, 151, 255'];
   let active = -1;
   function setActive(i) {
     if (i === active) return; active = i;
@@ -138,45 +151,70 @@ function init() {
   }
   dots.forEach((d, k) => d.addEventListener('click', () => {
     const r = track.getBoundingClientRect(); const top = scrollY + r.top; const len = r.height - innerHeight;
-    scrollTo({ top: top + len * (C0 + (k + 0.5) * (C1 - C0) / N), behavior: 'smooth' });
+    lenis.scrollTo(top + len * (C0 + (k + 0.5) * (C1 - C0) / N), { duration: 1.4 });
   }));
+  const glowEl = document.querySelector('.lt-glow');
+  const easeOutBack = (x, k = 1.15) => 1 + (k + 1) * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2);
+  const easeInOut = (x) => (x < 0.5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2); // quintic: slow start, slow landing
 
-  function frame() {
+  let last = performance.now();
+  function frame(now) {
     requestAnimationFrame(frame);
-    const d = target - prog;
-    if (Math.abs(d) > 0.00005) { prog += d * 0.12; dirty = true; }
-    if (!dirty) return; dirty = false;
-    const p = prog;
+    lenis.raf(now);
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (!visible || !lid) { if (!lid && dirty) { renderer.render(scene, camera); dirty = false; } return; }
+    // frame-rate independent damping
+    prog += (target - prog) * (1 - Math.exp(-dt * 7));
+    mx += (px - mx) * (1 - Math.exp(-dt * 3)); my += (py - my) * (1 - Math.exp(-dt * 3));
+    const p = prog, time = now / 1000;
 
-    // phase A -> B: turn around and open
-    const turn = ease(seg(p, 0.02, 0.24));
-    const open = ease(seg(p, 0.1, 0.28));
-    const on = seg(p, 0.16, 0.26);
-    // where the laptop sits once open
-    const fit = wide ? Math.min(1.15, (halfW * 2 * 0.5) / W) : Math.min(1.2, (halfW * 2 * 0.8) / W);
-    const endX = wide ? halfW * 0.3 : 0;
-    const endY = wide ? -4 * fit - halfH * 0.12 : halfH * 0.32 - 9 * fit;
-    const startS = wide ? fit * 0.7 : fit * 0.85;
-    const s = lerp(startS, fit, turn);
-    laptop.scale.setScalar(s);
-    laptop.position.set(lerp(0, endX, turn), lerp(-halfH * 0.62, endY, turn), 0);
-    // cases: index from scroll, gentle sway between them
+    const turn = easeInOut(seg(p, 0.0, 0.24));
+    const open = easeOutBack(seg(p, 0.1, 0.27), 0.9);
+    const on = seg(p, 0.17, 0.27);
+    const fit = wide ? Math.min(1.3, (halfW * 2 * 0.56) / W) : Math.min(1.25, (halfW * 2 * 0.76) / W);
+    const endX = wide ? halfW * 0.28 : 0;
+    const endY = wide ? -4 * fit - halfH * 0.1 : halfH * 0.3 - 9 * fit;
+    const startS = wide ? fit * 0.88 : fit * 0.95;
+    const startY = wide ? -halfH * 0.5 : -halfH * 0.32;
+    // a little lift in the middle of the turn, like the laptop is picked up
+    const lift = Math.sin(Math.PI * turn) * halfH * 0.06;
+    laptop.scale.setScalar(lerp(startS, fit, turn));
+    const idle = 1 - turn;                       // alive while waiting for the first scroll
+    const bob = Math.sin(time * 1.1) * 0.35 * (0.35 + 0.65 * idle);
+    laptop.position.set(lerp(0, endX, turn), lerp(startY, endY, turn) + lift + bob, 0);
+
     const cp = seg(p, C0, C1) * N;
     const idx = clamp(Math.floor(cp), 0, N - 1);
     const local = cp - idx;
-    const tr = idx < N - 1 ? ease(seg(local, 0.82, 1)) : 0;
-    const sway = Math.sin(seg(p, C0, C1) * Math.PI * N) * 0.06 * on;
-    laptop.rotation.set(lerp(0.7, 0.3, turn), lerp(-Math.PI * 1.15, wide ? -0.22 : 0, turn) + sway, 0);
-    lidOpen(lerp(1.92, 0.04, open));
+    const tr = idx < N - 1 ? ease(seg(local, 0.8, 1)) : 0;
+    // between cases the laptop leans a little and comes back
+    const sway = Math.sin(tr * Math.PI) * 0.12 + Math.sin(time * 0.6) * 0.015 * turn;
+    const yaw0 = -Math.PI * 1.12 + Math.sin(time * 0.5) * 0.06 * idle;
+    laptop.rotation.set(
+      lerp(0.78, 0.26, turn) + my * 0.05 * turn,
+      lerp(yaw0, wide ? -0.24 : 0, turn) + sway + mx * 0.12,
+      lerp(-0.08, 0, turn),
+    );
+    // studio light sweeps across the body while it turns
+    scene.environmentRotation.y = 3 + turn * 1.4 + mx * 0.15;
+    lidOpen(lerp(1.92, 0.04, Math.min(1.02, open)));
     if (screen) { const vis = open > 0.03; screen.visible = vis; if (glassMesh) glassMesh.visible = vis; }
     paint(idx, tr, on);
 
-    // overlays
-    const hf = 1 - seg(p, 0.0, 0.1);
+    // soft coloured glow behind the laptop, picks up each case
+    if (glowEl) {
+      const ci = Math.min(N - 1, idx + (tr > 0.5 ? 1 : 0));
+      glowEl.style.setProperty('--glow', GLOW[ci]);
+      glowEl.style.opacity = (on * 0.9 * (1 - seg(p, 0.985, 1))).toFixed(3);
+      const sp = laptop.position.clone().project(camera);
+      glowEl.style.transform = `translate3d(${((sp.x + 1) / 2 * vw).toFixed(1)}px, ${((1 - sp.y) / 2 * vh - vh * 0.05).toFixed(1)}px, 0) translate(-50%, -50%) scale(${(0.6 + 0.4 * turn).toFixed(3)})`;
+    }
+
+    const hf = 1 - seg(p, 0.0, 0.09);
     hero.style.opacity = hf.toFixed(3);
-    hero.style.transform = `translate3d(0, ${(-40 * (1 - hf)).toFixed(1)}px, 0)`;
+    hero.style.transform = `translate3d(0, ${(-60 * (1 - hf)).toFixed(1)}px, 0) scale(${(1 - 0.04 * (1 - hf)).toFixed(4)})`;
     hero.style.visibility = hf <= 0.001 ? 'hidden' : 'visible';
-    const cf = seg(p, 0.26, 0.31) * (1 - seg(p, 0.985, 1));
+    const cf = seg(p, 0.25, 0.31) * (1 - seg(p, 0.985, 1));
     capWrap.style.opacity = cf.toFixed(3);
     capWrap.style.pointerEvents = cf > 0.5 ? 'auto' : 'none';
     setActive(p >= C0 - 0.04 ? Math.min(N - 1, idx + (tr > 0.5 ? 1 : 0)) : -1);
